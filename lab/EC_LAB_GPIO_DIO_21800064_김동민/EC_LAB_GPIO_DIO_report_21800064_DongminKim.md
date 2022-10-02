@@ -2,7 +2,7 @@
 
 **Date:** 2022-10-02
 
-**Author/Partner:** Dongmin Kim / Jinho Guk
+**Author/Partner:** DongMin Kim / SeongJun Park
 
 **Github:** https://github.com/DongminKim21800064/EC_dmkim-064
 
@@ -355,15 +355,29 @@ When the num == 3, PA7 LED is turned on and others turned off .
 
 When the num == 4, PB6 LED is turned on and others turned off . 
 
-##  Results
+##  Results and Analysis
+
+## Results
 
 Experiment images and results
 
 > Show experiment images /results
 
+### Demo Video 
+
+ https://www.youtube.com/watch?v=ipuXnO2wPJw
 
 
-Demo Video : https://www.youtube.com/watch?v=ipuXnO2wPJw
+
+### Analysis 
+
+In this experiment, I try LED toggle using Nucleo F411RE.
+First, when I press the button once, I will execute the code that the LED turns off and on and toggles. The button is set to Input, the LED is set to Output, the button is set to Pull-up, the LED is set to Pull-up, Open drain, and Medium Speed.
+Press Reset Mode to begin. Every time I press the button, I can see that the LED is off and on.
+I intentionally caused a delay in the code. This is to prevent the **Bouncing**  in which the button switch is turned on and off at high-speed several times in a short period of time when it attaches to or falls into a mechanical contact.
+
+The second thing  is LAB multi LED. In the first experiment, I only looked at the LEDs connected to the PA5. This time, I will turn on and off the four LEDs sequentially.
+As in the first experiment, I  proceed with PULL-UP button and push-Pull, pull-up, and medium speed LED. Nothing turns on in the Reset state. You can see that it turns on one by one.
 
 ## Discussion
 
@@ -386,13 +400,304 @@ Hardware
 Complete list of all references used (github, blog, paper, etc)
 
 - https://github.com/ykkimhgu/EC-student/ lecture provided.
-
 - https://kocoafab.cc/tutorial/view/655 for drawing circuit with "Fritzing" program.
 - https://studymake.tistory.com/166 for understanding debouncing.
+- https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=albert0512&logNo=221522825682 for understanding set appropriate delay time.
 
 ## Troubleshooting
 
+1. Q : I needed an accurate understanding of PULL-Pull and  and OPEN DRAIN
 
+   A : Push/Pull literally means to push up or down to the ground, which means to conduct an internal switch toward the power source or the ground.
+   Open-Drain is a similar concept to TTL's Open-Collector, which creates a high value by saying that P-MOSFET is always Off and that the drain of the lower N-MosFet is OPEN. 
+
+   
+
+2. Q : How to set appropriate delay time?
+
+   A : Continue to read the current button state and the immediately preceding button state continuously.  If the current state is different from the previous state (when pressed and released), save the current time in **lastDebounceTime**. Make sure that the button is still pressed after the last time the status of the button has changed by **debounceDelay**. If the button is pressed and the action has not already been executed, the action is executed. Then, put **reading** in **buttonState** as a sign that it has been moved. If you release your hand from the button, the current time is saved again in **lastDebounceTime**. After that, check if the button is still not pressed when the **debounceDelay** has passed. If the button is not pressed continuously and the buttonState is in the HIGH state, fix the buttonState to **LOW (reading)**. Since the hand is released from the button **(reading==LOW)**, the operation is not executed.
+
+   
+
+3. Q : Check the code's compile without LED or other outputs.
+
+   A : Enter CTRL + F5 and observe the values step by step.
 
 ## Appendix
+
+#####  ecRCC.c
+
+```c
+#include "stm32f4xx.h"
+#include "ecRCC.h"
+
+volatile int EC_SYSCLK=16000000;
+
+void RCC_HSI_init() {
+	// Enable High Speed Internal Clock (HSI = 16 MHz)
+  //RCC->CR |= ((uint32_t)RCC_CR_HSION);
+	RCC->CR |= 0x00000001U;
+	
+  // wait until HSI is ready
+  //while ( (RCC->CR & (uint32_t) RCC_CR_HSIRDY) == 0 ) {;}
+	while ( (RCC->CR & 0x00000002U) == 0 ) {;}
+	
+  // Select HSI as system clock source 
+  RCC->CFGR &= (uint32_t)(~RCC_CFGR_SW); 								// not essential
+  RCC->CFGR |= (uint32_t)RCC_CFGR_SW_HSI; 								//00: HSI16 oscillator used as system clock
+
+	// Wait till HSI is used as system clock source
+  while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != 0 );
+		   
+	//EC_SYSTEM_CLK=16000000;
+		//EC_SYSCLK=16000000;
+		EC_SYSCLK=16000000;
+}
+
+void RCC_PLL_init() {	
+	// To correctly read data from FLASH memory, the number of wait states (LATENCY)
+  // must be correctly programmed according to the frequency of the CPU clock
+  // (HCLK) and the supply voltage of the device.		
+	FLASH->ACR &= ~FLASH_ACR_LATENCY;
+	FLASH->ACR |=  FLASH_ACR_LATENCY_2WS;
+		
+	// Enable the Internal High Speed oscillator (HSI)
+	RCC->CR |= RCC_CR_HSION;
+	while((RCC->CR & RCC_CR_HSIRDY) == 0);
+	
+	// Disable PLL for configuration
+	RCC->CR    &= ~RCC_CR_PLLON;
+	
+	// Select clock source to PLL
+	RCC->PLLCFGR &= ~RCC_PLLCFGR_PLLSRC; 		// Set source for PLL: clear bits
+	RCC->PLLCFGR |= RCC_PLLCFGR_PLLSRC_HSI; // Set source for PLL: 0 =HSI, 1 = HSE
+	
+	// Make PLL as 84 MHz
+	// f(VCO clock) = f(PLL clock input) * (PLLN / PLLM) = 16MHz * 84/8 = 168 MHz
+	// f(PLL_R) = f(VCO clock) / PLLP = 168MHz/2 = 84MHz
+	RCC->PLLCFGR = (RCC->PLLCFGR & ~RCC_PLLCFGR_PLLN) | 84U << 6;
+	RCC->PLLCFGR = (RCC->PLLCFGR & ~RCC_PLLCFGR_PLLM) | 8U ; 
+	RCC->PLLCFGR &= ~RCC_PLLCFGR_PLLP;  // 00: PLLP = 2, 01: PLLP = 4, 10: PLLP = 6, 11: PLLP = 8	
+	
+	
+	// Enable PLL after configuration
+	RCC->CR   |= RCC_CR_PLLON; 
+	while((RCC->CR & RCC_CR_PLLRDY)>>25 != 0);
+	
+	// Select PLL as system clock
+	RCC->CFGR &= ~RCC_CFGR_SW;
+	RCC->CFGR |= RCC_CFGR_SW_PLL;
+	
+	// Wait until System Clock has been selected
+	while ((RCC->CFGR & RCC_CFGR_SWS) != 8UL);
+	
+	// The maximum frequency of the AHB and APB2 is 100MHz,
+	// The maximum frequency of the APB1 is 50 MHz.
+	RCC->CFGR &= ~RCC_CFGR_HPRE;  		// AHB prescaler = 1; SYSCLK not divided (84MHz)
+	RCC->CFGR &= ~RCC_CFGR_PPRE1; 		// APB high-speed prescaler (APB1) = 2, HCLK divided by 2 (42MHz)
+	RCC->CFGR |=  RCC_CFGR_PPRE1_2;
+	RCC->CFGR &= ~RCC_CFGR_PPRE2; 		// APB high-speed prescaler (APB2) = 1, HCLK not divided	(84MHz)
+	
+	EC_SYSCLK=84000000;
+}
+
+
+void RCC_GPIOA_enable()
+{
+	// HSI is used as system clock         
+	RCC_HSI_init();
+	// RCC Peripheral Clock Enable Register 
+	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+}
+
+void RCC_GPIOB_enable()
+{
+	// HSI is used as system clock         
+	RCC_HSI_init();
+	// RCC Peripheral Clock Enable Register 
+	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
+}
+
+void RCC_GPIOC_enable()
+{
+	// HSI is used as system clock         
+	RCC_HSI_init();
+	// RCC Peripheral Clock Enable Register 
+	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
+}
+
+
+```
+
+
+
+ ##### ecGPIO.c
+
+```c
+#include "stm32f4xx.h"
+#include "stm32f411xe.h"
+#include "ecGPIO.h"
+#include "ecSysTick.h"
+
+void bit_toggle(GPIO_TypeDef* Port, int pin){
+	(Port->ODR) ^= (1UL << pin);
+}
+
+void GPIO_init(GPIO_TypeDef *Port, int pin, int mode){     
+	// mode  : Input(0), Output(1), AlterFunc(2), Analog(3)   
+	if (Port == GPIOA)
+		RCC_GPIOA_enable();
+	if (Port == GPIOB)
+		RCC_GPIOB_enable();
+	if (Port == GPIOC)
+		RCC_GPIOC_enable();
+
+	GPIO_mode(Port, pin, mode);
+	
+}
+
+
+// GPIO Mode          : Input(00), Output(01), AlterFunc(10), Analog(11)
+void GPIO_mode(GPIO_TypeDef *Port, int pin, int mode){
+   Port->MODER &= ~(3UL<<(2*pin));     
+   Port->MODER |= mode <<(2*pin);    
+}
+
+
+// GPIO Speed          : Low speed (00), Medium speed (01), Fast speed (10), High speed (11)
+void GPIO_ospeed(GPIO_TypeDef *Port, int pin, int speed){
+	  Port->OSPEEDR &= 	~(3UL<<(2*pin));
+		Port->OSPEEDR |=  	speed <<(2*pin);								 //10:Fast Speed
+}
+
+// GPIO Output Type: Output push-pull (0, reset), Output open drain (1)
+void GPIO_otype(GPIO_TypeDef *Port, int pin, int type){
+		Port->OTYPER &= 		~(type<<(pin));							 	// 0:Push-Pull   
+}
+
+// GPIO Push-Pull    : No pull-up, pull-down (00), Pull-up (01), Pull-down (10), Reserved (11)
+void GPIO_pupd(GPIO_TypeDef *Port, int pin, int pupd){
+   	Port->PUPDR &= 	~(3UL<<(2*pin));
+		Port->PUPDR  |=		pupd<<(2*pin);									// 10: Pull-UP		
+}
+
+int GPIO_read(GPIO_TypeDef *Port, int pin){
+
+	unsigned int btVal=0;
+			//Read bit value of Button
+			btVal=(Port->IDR>>pin) & 1UL;	
+	return btVal;    	//[TO-DO] YOUR CODE GOES HERE	
+}
+
+
+
+void GPIO_write(GPIO_TypeDef *Port, int pin, int Output){
+	Port->ODR &= ~(1UL<<(pin));
+  Port->ODR |= (Output <<(pin));
+}
+
+
+void multipleLED_init(void)
+{
+	RCC_HSI_init();	
+	SysTick_init();
+	
+	GPIO_init(GPIOC, BUTTON_PIN, INPUT);  // calls RCC_GPIOC_enable()
+	GPIO_init(GPIOA, 5, OUTPUT);    // calls RCC_GPIOA_enable()
+	GPIO_init(GPIOA, 6, OUTPUT);
+	GPIO_init(GPIOA, 7, OUTPUT);
+	GPIO_init(GPIOB, 6, OUTPUT);
+
+	// Digital in --------------------------------------------------------------
+	GPIO_pupd(GPIOC, BUTTON_PIN, EC_PU);
+
+	// Digital out -------------------------------------------------------------
+	GPIO_pupd(GPIOA, 5, EC_PU);
+	GPIO_otype(GPIOA, 5, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 5, MEDIUM_SPEED);
+
+	GPIO_pupd(GPIOA, 6, EC_PU);
+	GPIO_otype(GPIOA, 6, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 6, MEDIUM_SPEED);
+
+	GPIO_pupd(GPIOA, 7, EC_PU);
+	GPIO_otype(GPIOA, 7, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 7, MEDIUM_SPEED);
+
+	GPIO_pupd(GPIOB, 6, EC_PU);
+	GPIO_otype(GPIOB, 6, PUSH_PULL);
+	GPIO_ospeed(GPIOB, 6, MEDIUM_SPEED);
+
+}
+
+
+void multipleLED(uint32_t  num){
+	int count = 0;
+	int number[5][4] = {
+		{0,0,0,0}, // all LEDs are turned off
+		{1,0,0,0}, // PA5 LED is turned on and others turned off 
+		{0,1,0,0}, // PA6 LED is turned on and others turned off
+		{0,0,1,0}, // PA7 LED is turned on and others turned off
+		{0,0,0,1}, // PB6 LED is turned on and others turned off
+	};
+		GPIO_write(GPIOA, 5, number[num][0]);
+		GPIO_write(GPIOA, 6, number[num][1]);
+		GPIO_write(GPIOA, 7, number[num][2]);
+		GPIO_write(GPIOB, 6, number[num][3]);
+	
+		delay_ms(50);
+		
+		count++;
+		if (count >10) count =0;
+		SysTick_reset();
+}
+
+void sevensegment_init(void){
+
+	GPIO_init(GPIOA, 8, OUTPUT);		// A
+	GPIO_init(GPIOB, 10, OUTPUT);		// B	
+	GPIO_init(GPIOA, 7, OUTPUT);		// C
+	GPIO_init(GPIOA, 6, OUTPUT);		// D
+	GPIO_init(GPIOA, 5, OUTPUT);		// E
+	GPIO_init(GPIOA, 9, OUTPUT);		// F
+	GPIO_init(GPIOC, 7, OUTPUT);		// G
+	GPIO_init(GPIOB, 6, OUTPUT);		// DP
+	
+	//Set PULL-UP Mode
+	GPIO_pupd(GPIOC, BUTTON_PIN, EC_PU); 			// PULL-UP  
+
+}
+
+void sevensegment_decode(uint8_t  num){
+	
+	// 7-segments Reversed TruthTable
+		int number[10][8] = {
+									// A B C D E F G DP
+										{0,0,0,0,0,0,1,1},          //zero
+                    {1,0,0,1,1,1,1,1},          //one
+                    {0,0,1,0,0,1,0,1},          //two
+                    {0,0,0,0,1,1,0,1},          //three
+                    {1,0,0,1,1,0,0,1},          //four
+                    {0,1,0,0,1,0,0,1},          //five
+                    {0,1,0,0,0,0,0,1},          //six
+                    {0,0,0,1,1,1,1,1},          //seven
+                    {0,0,0,0,0,0,0,1},          //eight
+                    {0,0,0,0,1,0,0,1},          //nine
+						};				
+
+		GPIO_write(GPIOA, 8, number[num][0]);  // A
+		GPIO_write(GPIOB, 10, number[num][1]); // B
+		GPIO_write(GPIOA, 7, number[num][2]);  // C
+		GPIO_write(GPIOA, 6, number[num][3]);  // D
+		GPIO_write(GPIOA, 5, number[num][4]);  // E
+		GPIO_write(GPIOA, 9, number[num][5]);  // F
+		GPIO_write(GPIOC, 7, number[num][6]);  // G
+		GPIO_write(GPIOB, 6, number[num][7]);  // DP
+		 
+		
+	}	
+					
+```
+
+
 
