@@ -233,6 +233,8 @@ Enter the GPIOC port and toggle the position of the LED pin using XOR bitwise.
 
 Circuit diagram
 
+![image](https://user-images.githubusercontent.com/91419683/193450682-dc43fae2-85ab-4a6c-8f04-978a48a4d386.png)
+
 
 
 
