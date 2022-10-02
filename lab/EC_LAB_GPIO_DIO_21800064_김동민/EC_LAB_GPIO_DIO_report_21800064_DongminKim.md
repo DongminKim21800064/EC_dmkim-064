@@ -4,9 +4,9 @@
 
 **Author/Partner:** Dongmin Kim / Jinho Guk
 
-**Github:** repository link
+**Github:** https://github.com/DongminKim21800064/EC_dmkim-064
 
-**Demo Video:** Youtube link
+**Demo Video:** https://www.youtube.com/watch?v=ipuXnO2wPJw
 
 # Introduction
 
@@ -119,7 +119,7 @@ See Appendix
 
 ## Code
 
-Your code goes here: [ADD Code LINK such as github](https://github.com/ykkimhgu/EC-student/)
+Your code goes here: https://github.com/DongminKim21800064/EC_dmkim-064/blob/main/lab/EC_LAB_GPIO_DIO_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC/LAB_GPIO_DIO_LED.c
 
 Explain your source code with necessary comments.
 
@@ -243,7 +243,7 @@ NUCLEO-F411RE with bread board for **Problem3** by Fritzing.
 
 ## Code
 
-Your code goes here: [ADD Code LINK such as github](https://github.com/ykkimhgu/EC-student/)
+Your code goes here: [https://github.com/DongminKim21800064/EC_dmkim-064/blob/main/lab/EC_LAB_GPIO_DIO_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC/LAB_GPIO_DIO_Multiple_LED.c](https://github.com/ykkimhgu/EC-student/)
 
 Explain your source code with necessary comments.
 
@@ -361,7 +361,9 @@ Experiment images and results
 
 > Show experiment images /results
 
-demo video link
+
+
+Demo Video : https://www.youtube.com/watch?v=ipuXnO2wPJw
 
 ## Discussion
 
