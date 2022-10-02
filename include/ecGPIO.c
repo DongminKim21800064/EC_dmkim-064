@@ -27,13 +27,6 @@ void GPIO_init(GPIO_TypeDef *Port, int pin, int mode){
 		RCC_GPIOB_enable();
 	if (Port == GPIOC)
 		RCC_GPIOC_enable();
-	
-	//[TO-DO] YOUR CODE GOES HERE
-	// Make it for GPIOB, GPIOD..GPIOH
-
-
-	// You can also make a more general function of
-	// void RCC_GPIO_enable(GPIO_TypeDef *Port); 
 
 	GPIO_mode(Port, pin, mode);
 	
@@ -117,11 +110,11 @@ void multipleLED_init(void)
 void multipleLED(uint32_t  num){
 	int count = 0;
 	int number[5][4] = {
-		{0,0,0,0},
-		{1,0,0,0},
-		{0,1,0,0},
-		{0,0,1,0},
-		{0,0,0,1},
+		{0,0,0,0}, // all LEDs are turned off
+		{1,0,0,0}, // PA5 LED is turned on and others turned off 
+		{0,1,0,0}, // PA6 LED is turned on and others turned off
+		{0,0,1,0}, // PA7 LED is turned on and others turned off
+		{0,0,0,1}, // PB6 LED is turned on and others turned off
 	};
 		GPIO_write(GPIOA, 5, number[num][0]);
 		GPIO_write(GPIOA, 6, number[num][1]);
@@ -148,10 +141,7 @@ void sevensegment_init(void){
 	
 	//Set PULL-UP Mode
 	GPIO_pupd(GPIOC, BUTTON_PIN, EC_PU); 			// PULL-UP  
-	
-	GPIO_pupd(GPIOA, LED_PIN, EC_PU);					// PULL-UP
-	GPIO_otype(GPIOA, LED_PIN, PUSH_PULL); 		// PUSH-PULL
-	GPIO_ospeed(GPIOA, LED_PIN,MEDIUM_SPEED); // MEDIUM-SPEED
+
 }
 
 void sevensegment_decode(uint8_t  num){
