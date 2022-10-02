@@ -233,7 +233,7 @@ Enter the GPIOC port and toggle the position of the LED pin using XOR bitwise.
 
 Circuit diagram
 
-![image-20221002194802802](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221002194802802.png)
+
 
 
 
