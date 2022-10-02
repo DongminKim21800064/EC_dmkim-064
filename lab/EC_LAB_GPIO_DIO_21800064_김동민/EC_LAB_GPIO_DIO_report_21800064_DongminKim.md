@@ -26,7 +26,7 @@ In this lab, you are required to create a simple program that toggle multiple LE
 
   - LEDs x 4
 
-  - Resistor 330 ohm x 3, breadboard
+  - Resistor 330 ohm x 4, breadboard
 
     
 
@@ -237,7 +237,7 @@ Circuit diagram
 
 ![image](https://user-images.githubusercontent.com/91419683/193450682-dc43fae2-85ab-4a6c-8f04-978a48a4d386.png)
 
-
+NUCLEO-F411RE with bread board for **Problem3** by Fritzing. 
 
 
 
@@ -247,19 +247,146 @@ Your code goes here: [ADD Code LINK such as github](https://github.com/ykkimhgu/
 
 Explain your source code with necessary comments.
 
+**LAB_GPIO_DIO_Multiple_LED.c** 
+
 ```c
-// Your MAIN CODE ONLY
+#include "stm32f4xx.h"
+#include "ecRCC.h"
+#include "ecGPIO.h"
+#include "ecSysTick.h"
+
+void setup(void);
+
+int main(void) { 
+	 uint32_t i=0;
+   // Initialiization --------------------------------------------------------
+   multipleLED_init();
+   
+   // Inifinite Loop ----------------------------------------------------------
+   while(1){
+      if(GPIO_read(GPIOC, BUTTON_PIN) == 0){
+         i++;
+         if(i==5) i = 0;
+			}
+   multipleLED(i);
+		}
+}
 ```
 
+First of all, I initialized the setting of multiple LED. In the infinite loop, when the button is pressed, integer type **i** will increase. The function **multipleLED** get the value of **i**, then sequentially LED will turn on. We just use 0 to 4 in **i** . Therefore when the i==5, reset the **i** to 0.
 
+
+
+**multipleLED_init** 
+
+```c
+void multipleLED_init(void)
+{
+	RCC_HSI_init();	
+	SysTick_init();
+	
+	GPIO_init(GPIOC, BUTTON_PIN, INPUT);  // calls ButtonPin_enable()
+	GPIO_init(GPIOA, 5, OUTPUT);    	  // calls LED_enable()
+	GPIO_init(GPIOA, 6, OUTPUT);
+	GPIO_init(GPIOA, 7, OUTPUT);
+	GPIO_init(GPIOB, 6, OUTPUT);
+
+	// Digital in --------------------------------------------------------------
+	GPIO_pupd(GPIOC, BUTTON_PIN, EC_PU);
+
+	// Digital out -------------------------------------------------------------
+	GPIO_pupd(GPIOA, 5, EC_PU);
+	GPIO_otype(GPIOA, 5, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 5, MEDIUM_SPEED);
+
+	GPIO_pupd(GPIOA, 6, EC_PU);
+	GPIO_otype(GPIOA, 6, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 6, MEDIUM_SPEED);
+
+	GPIO_pupd(GPIOA, 7, EC_PU);
+	GPIO_otype(GPIOA, 7, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 7, MEDIUM_SPEED);
+
+	GPIO_pupd(GPIOB, 6, EC_PU);
+	GPIO_otype(GPIOB, 6, PUSH_PULL);
+	GPIO_ospeed(GPIOB, 6, MEDIUM_SPEED);
+
+}
+```
+
+To require the Configuration, set the all pins Push-Pull, Pull-up and Medium Speed.
+
+**multipleLED**  
+
+```c
+void multipleLED(uint32_t  num){
+	int count = 0;
+	int number[5][4] = {
+		{0,0,0,0},
+		{1,0,0,0},
+		{0,1,0,0},
+		{0,0,1,0},
+		{0,0,0,1},
+	};
+		GPIO_write(GPIOA, 5, number[num][0]);
+		GPIO_write(GPIOA, 6, number[num][1]);
+		GPIO_write(GPIOA, 7, number[num][2]);
+		GPIO_write(GPIOB, 6, number[num][3]);
+	
+		delay_ms(50);
+		
+		count++;
+		if (count >10) count =0;
+		SysTick_reset();
+}
+```
+
+To reduce the code data, I declared the structure type "number". 
+
+This code set 5 modes. 
+
+When the num == 0, all LEDs are turned off. 
+
+When the num == 1, PA5 LED is turned on and others turned off . 
+
+When the num == 2, PA6 LED is turned on and others turned off . 
+
+When the num == 3, PA7 LED is turned on and others turned off . 
+
+When the num == 4, PB6 LED is turned on and others turned off . 
+
+##  Results
+
+Experiment images and results
+
+> Show experiment images /results
+
+demo video link
 
 ## Discussion
 
-1. Find out a typical solution for software debouncing and hardware debouncing. What method of debouncing did this NUCLEO board used for the push-button(B1)?
+**1. Find out a typical solution for software debouncing and hardware debouncing. What method of debouncing did this NUCLEO board used for the push-button(B1)?**
+
+- There's the word bouncing, which means that when a human-touch sensor, such as a real switch button, presses this sensor, and at the moment, the on/off is repeated several times in the sensor's close contact.
+
+Software
+
+- A typical solution to solve Bouncing with software is giving a time delay. For example, if the time to Bouncing when the switch is pressed is 30 ms.  the time delay is given to 50 ms. there is a time delay of 20 ms after the Bouncing is over, so the Bouncing can be solved.
+
+Hardware
+
+- To eliminate Bouncing(chattering) in the switch button by hardware way, I can add capacitors that can act on the switch. The timing of chattering is different depending on the type of switch and the attached instrument, so the resistance is added to each application to control the timing to prevent chattering by adjusting the time constant by RC.
+
+- The NUCLEO board used a method of solving Bouncing by giving time delay to  software. I gave a delay to the main function using the functions "ecSysTick.c" and "ecSysTick.h" given in the class.
 
 ## Reference
 
+Complete list of all references used (github, blog, paper, etc)
 
+- https://github.com/ykkimhgu/EC-student/ lecture provided.
+
+- https://kocoafab.cc/tutorial/view/655 for drawing circuit with "Fritzing" program.
+- https://studymake.tistory.com/166 for understanding debouncing.
 
 ## Troubleshooting
 

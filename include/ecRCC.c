@@ -1,3 +1,15 @@
+/*----------------------------------------------------------------\
+@ Embedded Controller by Young-Keun Kim - Handong Global University
+Author           : SSS Lab
+Created          : 05-03-2021
+Modified         : 10-01-2022 by DongMin Kim
+Language/ver     : C++ in Keil uVision
+
+Description      : Distributed to Students for RCC
+/----------------------------------------------------------------*/
+
+
+
 #include "stm32f4xx.h"
 #include "ecRCC.h"
 
@@ -95,3 +107,4 @@ void RCC_GPIOC_enable()
 	// RCC Peripheral Clock Enable Register 
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
 }
+

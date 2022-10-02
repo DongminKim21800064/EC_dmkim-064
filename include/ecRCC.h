@@ -1,3 +1,16 @@
+/*----------------------------------------------------------------\
+@ Embedded Controller by Young-Keun Kim - Handong Global University
+Author           : SSS Lab
+Created          : 05-03-2021
+Modified         : 10-01-2022 by DongMin Kim
+Language/ver     : C++ in Keil uVision
+
+Description      : Distributed to Students for RCC
+/----------------------------------------------------------------*/
+
+
+
+
 #ifndef __EC_RCC_H
 #define __EC_RCC_H
 
