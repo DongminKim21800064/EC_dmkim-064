@@ -123,15 +123,84 @@ Your code goes here: [ADD Code LINK such as github](https://github.com/ykkimhgu/
 
 Explain your source code with necessary comments.
 
-``` c
+**LAB_GPIO_DIO_LED.c**
 
+``` c
+#include "stm32f4xx.h"
+#include "ecRCC.h"
+#include "ecGPIO.h"
+#include "ecSysTick.h"
+
+#define LED_PIN 	5
+#define BUTTON_PIN 13
+
+void setup(void);
+	
+int main(void) { 
+
+	// Initialiization --------------------------------------------------------
+	setup();
+	
+	 //Inifinite Loop ----------------------------------------------------------
+	while(1){
+		// When the button pressed
+		if(GPIO_read(GPIOC, BUTTON_PIN) == 0){
+			bit_toggle(GPIOA, LED_PIN);
+		}	
+		// For debouncing
+		delay_ms(50);
+		SysTick_reset();
+	}
+}
+
+// Initialiization 
+void setup(void)
+{
+	RCC_HSI_init();	
+	SysTick_init();
+	GPIO_init(GPIOC, BUTTON_PIN, INPUT);  		// calls RCC_GPIOC_enable()
+	GPIO_pupd(GPIOC, BUTTON_PIN, EC_PU); 		// PULL-UP  
+	
+	GPIO_init(GPIOA, LED_PIN, OUTPUT);    		// calls RCC_GPIOA_enable()
+	GPIO_pupd(GPIOA, LED_PIN, EC_PU);			// PULL-UP
+	GPIO_otype(GPIOA, LED_PIN, OPEN_DRAIN); 	// OPEN-DRAIN
+	GPIO_ospeed(GPIOA, LED_PIN,MEDIUM_SPEED);   // MEDIUM-SPEED
+}
 ```
+
+This is the main code of Problem 2. I included the necessary header file and defined the pin number of the LED and Button.
+
+In the **setup** function, I declared GPIO functions for requiring configurations. As you can see from the code, the Button pin set PULL-UP and the LED pin set PULL-UP, OPEN-DRAIN, and MEDIUM-SPEED. 
+
+In the **main** function, I made the infinite loop. When I pressed the button, LED will toggle. The details of **bit_toggle** are below.
+
+**bit_toggle**
+
+```c
+void bit_toggle(GPIO_TypeDef* Port, int pin){
+	(Port->ODR) ^= (1UL << pin);
+}
+```
+
+Enter the GPIOC port and toggle the position of the LED pin using XOR bitwise.
 
 ## Discussion
 
 1. Find out a typical solution for software debouncing and hardware debouncing. 
+
+   There's the word bouncing, which means that when a human-touch sensor, such as a real switch button, presses this sensor, and at the moment, the on/off is repeated several times in the sensor's close contact.
+
+   Software
+
+   A typical solution to solve Bouncing with software is giving a time delay. For example, if the time to Bouncing when the switch is pressed is 30 ms.  the time delay is given to 50 ms. there is a time delay of 20 ms after the Bouncing is over, so the Bouncing can be solved.
+
+   Hardware
+
+   To eliminate Bouncing(chattering) in the switch button by hardware way, I can add capacitors that can act on the switch. The timing of chattering is different depending on the type of switch and the attached instrument, so the resistance is added to each application to control the timing to prevent chattering by adjusting the time constant by RC.
+
 2. What method of debouncing did this NUCLEO board used for the push-button(B1)?
-3. 
+
+   The NUCLEO board used a method of solving Bouncing by giving time delay to  software. I gave a delay to the main function using the functions "ecSysTick.c" and "ecSysTick.h" given in the class.
 
 # Problem 3: Toggle multi-LED with Button
 
@@ -164,7 +233,7 @@ Explain your source code with necessary comments.
 
 Circuit diagram
 
-image
+![image-20221002194802802](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221002194802802.png)
 
 
 
