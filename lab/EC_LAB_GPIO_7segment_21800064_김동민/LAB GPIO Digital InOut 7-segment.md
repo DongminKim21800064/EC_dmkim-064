@@ -4,9 +4,9 @@
 
 **Author/Partner:** DongMin Kim / Seongjun Park
 
-**Github:** repository link 
+**Github:** https://github.com/DongminKim21800064/EC_dmkim-064/tree/main/lab/EC_LAB_GPIO_7segment_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC 
 
-**Demo Video:** Youtube link
+**Demo Video:** https://youtu.be/zCFLeOTo1D0
 
 **PDF version:**
 
@@ -294,9 +294,12 @@ Refer to truth table of 7-segment, I write the '1' and '0' in the "number", but 
 ### Results
 
 Experiment images and results
+
+**Image**
+
 ![image](https://user-images.githubusercontent.com/91419683/194772733-6804e859-48ef-4d59-b2be-92340fb34ae2.png)
 
-
+**Demo Video :** https://youtu.be/zCFLeOTo1D0
 
 ### Reference
 
