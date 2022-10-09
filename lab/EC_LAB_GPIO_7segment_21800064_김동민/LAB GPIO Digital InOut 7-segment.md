@@ -8,7 +8,7 @@
 
 **Demo Video:** https://youtu.be/zCFLeOTo1D0
 
-**PDF version:**
+**PDF version:** https://github.com/DongminKim21800064/EC_dmkim-064/blob/main/lab/EC_LAB_GPIO_7segment_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC/LAB%20GPIO%20Digital%20InOut%207-segment.pdf
 
 
 
