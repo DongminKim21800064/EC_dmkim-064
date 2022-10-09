@@ -69,7 +69,7 @@ Apply 'H' to any 7-segment pin 'a'~'g' and observe if that LED is turned on or o
 
 Circuit diagram
 
-![image-20221009172736965](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221009172736965.png)
+![image](https://user-images.githubusercontent.com/91419683/194772659-14e47d9d-f85f-48e9-8f10-4b829c286b05.png)
 
 
 
@@ -77,14 +77,14 @@ Circuit diagram
 
 **1.** **Draw the truth table for the BCD 7-segment decoder with the 4-bit input.**
 
-![image-20221010013804809](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221010013804809.png)
+![image](https://user-images.githubusercontent.com/91419683/194772644-37077199-db5e-4ceb-86a6-2dda412860cc.png)
+
 
 **2.** **What are the common cathode and common anode of 7-segment display?**
 
    The way it works has been switched to an anode type and a cathode type. For the anode type, the LED was turned on by the -V (Off) signal, and the LED was turned on by the cathode +V (On) signal.
 
-![image-20221010012421636](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221010012421636.png)
-
+![image](https://user-images.githubusercontent.com/91419683/194772673-105e4e10-112f-40b0-ad9a-09e7335ab60e.png)
 
 
 **3.** **Does the LED of a 7-segment display (common anode) pin turn ON when 'HIGH' is given to the LED pin from the MCU?**
@@ -127,7 +127,7 @@ void sevensegment_decoder(uint8_t  num);
 
 ## Configuration
 
-![image-20221010002952992](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221010002952992.png)
+![image](https://user-images.githubusercontent.com/91419683/194772712-fbed458d-0a91-41e1-9909-46164fed16e8.png)
 
 ###  Exercise
 
@@ -294,6 +294,7 @@ Refer to truth table of 7-segment, I write the '1' and '0' in the "number", but 
 ### Results
 
 Experiment images and results
+![image](https://user-images.githubusercontent.com/91419683/194772733-6804e859-48ef-4d59-b2be-92340fb34ae2.png)
 
 
 
