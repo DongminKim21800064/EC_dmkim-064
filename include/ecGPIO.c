@@ -2,7 +2,7 @@
 @ Embedded Controller by Young-Keun Kim - Handong Global University
 Author           : SSS Lab
 Created          : 05-03-2021
-Modified         : 10-01-2022 by DongMin Kim
+Modified         : 10-10-2022 by DongMin Kim
 Language/ver     : C++ in Keil uVision
 
 Description      : Distributed to Students for LAB_GPIO
@@ -139,9 +139,38 @@ void sevensegment_init(void){
 	GPIO_init(GPIOC, 7, OUTPUT);		// G
 	GPIO_init(GPIOB, 6, OUTPUT);		// DP
 	
-	//Set PULL-UP Mode
+	//Set BUTTON_PIN to PULL-UP Mode
 	GPIO_pupd(GPIOC, BUTTON_PIN, EC_PU); 			// PULL-UP  
-
+	
+	//Set 7segment_PIN to NO PULL-UP, PULL-DOWN Mode
+	GPIO_pupd(GPIOA, 5, NONE); // no pull-up, pull-down
+	GPIO_pupd(GPIOA, 6, NONE);
+	GPIO_pupd(GPIOA, 7, NONE);
+	GPIO_pupd(GPIOA, 8, NONE);
+	GPIO_pupd(GPIOA, 9, NONE);
+	GPIO_pupd(GPIOB, 6, NONE);
+	GPIO_pupd(GPIOB,10, NONE);
+	GPIO_pupd(GPIOC, 7, NONE);
+	
+	//Set 7segment_PIN to Push-Pull Mode
+	GPIO_otype(GPIOA, 5, PUSH_PULL); //push-pull
+	GPIO_otype(GPIOA, 6, PUSH_PULL);
+	GPIO_otype(GPIOA, 7, PUSH_PULL);
+	GPIO_otype(GPIOA, 8, PUSH_PULL);
+	GPIO_otype(GPIOA, 9, PUSH_PULL);
+	GPIO_otype(GPIOB, 6, PUSH_PULL);
+	GPIO_otype(GPIOB,10, PUSH_PULL);
+	GPIO_otype(GPIOC, 7, PUSH_PULL);
+	
+	//Set 7segment_PIN to mid speed Mode
+	GPIO_ospeed(GPIOA, 5, MEDIUM_SPEED ); //mid-speed
+  GPIO_ospeed(GPIOA, 6, MEDIUM_SPEED );
+	GPIO_ospeed(GPIOA, 7, MEDIUM_SPEED );
+	GPIO_ospeed(GPIOA, 8, MEDIUM_SPEED );
+	GPIO_ospeed(GPIOA, 9, MEDIUM_SPEED );
+	GPIO_ospeed(GPIOB, 6, MEDIUM_SPEED );
+	GPIO_ospeed(GPIOB,10, MEDIUM_SPEED );
+	GPIO_ospeed(GPIOC, 7, MEDIUM_SPEED );
 }
 
 void sevensegment_decode(uint8_t  num){

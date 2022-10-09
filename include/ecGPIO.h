@@ -2,7 +2,7 @@
 @ Embedded Controller by Young-Keun Kim - Handong Global University
 Author           : SSS LAB
 Created          : 05-03-2021
-Modified         : 10-01-2022 by DongMin Kim
+Modified         : 10-10-2022 by DongMin Kim
 Language/ver     : C++ in Keil uVision
 
 Description      : Distributed to Students for LAB_GPIO
