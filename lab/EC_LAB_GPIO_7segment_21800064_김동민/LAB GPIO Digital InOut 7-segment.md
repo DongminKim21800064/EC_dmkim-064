@@ -1,6 +1,6 @@
 #  LAB: GPIO Digital InOut 7-segment
 
-**Date:** 2022-10-09
+**Date:** 2022-10-10
 
 **Author/Partner:** DongMin Kim / Seongjun Park
 
@@ -295,25 +295,29 @@ Refer to truth table of 7-segment, I write the '1' and '0' in the "number", but 
 
 Experiment images and results
 
-**Image**
+**Image1** **: Whole circuit and MCU.**
 
 ![image](https://user-images.githubusercontent.com/91419683/194772961-e10d876d-a0ee-495e-aba3-7d58be9684a0.png)
 
 
+
+**Image2 : Zoom in the 7-segment**
+
 ![image](https://user-images.githubusercontent.com/91419683/194772733-6804e859-48ef-4d59-b2be-92340fb34ae2.png)
-
-**Demo Video :** https://youtu.be/zCFLeOTo1D0
-=======
-
-
 
 
 
 **Demo Video Link :** https://youtu.be/zCFLeOTo1D0
 
 
+
+
 ### Reference
 
 - **common anode and cathode type of 7-segment**
   - https://kocoafab.cc/tutorial/view/351
+- **Lecture provided**
+  -  https://github.com/ykkimhgu/EC-student/tree/main/tutorial/tutorial-student
+
+
 
