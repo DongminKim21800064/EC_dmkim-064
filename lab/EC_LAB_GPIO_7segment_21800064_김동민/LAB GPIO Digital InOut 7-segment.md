@@ -296,19 +296,21 @@ Refer to truth table of 7-segment, I write the '1' and '0' in the "number", but 
 Experiment images and results
 
 **Image**
-<<<<<<< Updated upstream
+
+![image](https://user-images.githubusercontent.com/91419683/194772961-e10d876d-a0ee-495e-aba3-7d58be9684a0.png)
+
 
 ![image](https://user-images.githubusercontent.com/91419683/194772733-6804e859-48ef-4d59-b2be-92340fb34ae2.png)
 
 **Demo Video :** https://youtu.be/zCFLeOTo1D0
 =======
 
-![image-20221010030441899](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221010030441899.png)
+
 
 
 
 **Demo Video Link :** https://youtu.be/zCFLeOTo1D0
->>>>>>> Stashed changes
+
 
 ### Reference
 
