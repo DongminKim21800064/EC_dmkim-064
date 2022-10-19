@@ -40,10 +40,10 @@ MCU:  STM32F411RE (Nucleo-64)
   * [Interrupt EXTI](#interrupt-EXTI)
     + [Header File](#header-file)
     + [EXTI_init\(\)](#exti_init)
-    + [EXTI_enable\(\)](#exti enable)
-    + [EXTI_disable\(\)](#exti disable)
-    + [is_pending_EXTI\(\)](#is pending exti)
-    + [clear_pending_EXTI\(\)](#clear pending exti)
+    + [EXTI_enable\(\)](#exti_enable)
+    + [EXTI_disable\(\)](#exti_disable)
+    + [is_pending_EXTI\(\)](#is_pending_exti)
+    + [clear_pending_EXTI\(\)](#clear_pending_exti)
 
 ---
 
