@@ -455,21 +455,105 @@ void LED_toggle(GPIO_TypeDef *Port, uint32_t pin);
 
 
 
-### Function Name
+### EXTI_init
 
-```text
+Initialize EXIT
 
+```c
+void EXTI_init (GPIO_TypeDef *Port, uint32_t pin, int edge , int prior);
 ```
 
 **Parameters**
 
-* p1
-* p2
+* **Port:**  Port Number,  GPIOA~GPIOH
+* **pin:**  pin number (int) 0~15
+* **edge:** Trigger type, Fall and Rising
+* **prior:** Priority
 
 **Example code**
 
-```text
+```c
+EXTI_init(GPIOC, BUTTON_PIN, FALL, 0);
+```
 
+
+
+### EXTI_enable
+
+Enable the EXIT
+
+```c
+void EXTI_enable(uint32_t pin);
+```
+
+**Parameters**
+
+* **pin:**  pin number (int) 0~15
+
+**Example code**
+
+```c
+EXTI_enable(BUTTON_PIN);
+```
+
+
+
+### EXTI_disable
+
+Enable the EXIT
+
+```c
+void EXTI_disable(uint32_t pin);
+```
+
+**Parameters**
+
+* **pin:**  pin number (int) 0~15
+
+**Example code**
+
+```c
+EXTI_disable(BUTTON_PIN);
+```
+
+
+
+### is_pending_EXTI
+
+Check EXTI pending
+
+```c
+uint32_t is_pending_EXTI(uint32_t pin);
+```
+
+**Parameters**
+
+* **pin:**  pin number (int) 0~15
+
+**Example code**
+
+```c
+is_pending_EXTI (BUTTON_PIN);
+```
+
+
+
+### clear_pending_EXTI
+
+Clear the EXTI pending
+
+```c
+void clear_pending_EXTI(uint32_t pin);
+```
+
+**Parameters**
+
+* **pin:**  pin number (int) 0~15
+
+**Example code**
+
+```c
+clear_pending_EXTI(BUTTON_PIN);
 ```
 
 
