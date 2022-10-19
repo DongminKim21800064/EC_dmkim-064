@@ -492,7 +492,7 @@ void LED_toggle(GPIO_TypeDef *Port, uint32_t pin);
  extern "C" {
 #endif /* __cplusplus */
 
-void SysTick_init(void);
+void SysTick_init(uint32_t Ticks);
 void SysTick_Handler(void);
 void SysTick_counter();
 void delay_ms(uint32_t msec);
@@ -515,12 +515,12 @@ uint32_t SysTick_val(void);
 Initailize Systick Clock.
 
 ```c
-void SysTick_init(void);
+void SysTick_init(uint32_t Ticks);
 ```
 
 **Parameters**
 
-* void
+* Ticks : To control the period.
 
 **Example code**
 

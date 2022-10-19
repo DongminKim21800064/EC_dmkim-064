@@ -1,12 +1,12 @@
-# LAB: GPIO Digital InOut 
+# LAB: EXTI SysTick 
 
 **Date:** 2022-10-19
 
 **Author/Partner:** DongMin Kim / SeongJun Park
 
-**Github:** 
+**Github:**  
 
-**Demo Video:** 
+**Demo Video:**  https://youtu.be/HSpYIvjLOF0
 
 # Introduction
 
@@ -117,7 +117,11 @@ void clear_pending_EXTI(uint32_t pin);
 
 2. What would happen if the EXTI  interrupt handler does not clear the interrupt pending flags? Check with your code
 
-   ​	Once the LED is turn on, LED looks like never turns off before reset. In reality, because the pending value was not cleared, the function in the interrupt  handler was repeatedly running at a very high speed, which seemed to keep the LED  turning on state because it could not be recognized by the human eye.  
+   ​	Once the LED is turn on, LED looks like never turns off before reset. In reality, because the pending value was not cleared, the function in the interrupt  handler was repeatedly running at a very high speed, which seemed to keep the LED  turning on state because it could not be recognized by the human eye. 
+   
+   To check this phenomenon, i tried to these process. As you can see, the code was  written to repeat the function of turning off the LED while the handler function was  running once, and it was confirmed that the brightness of the LED decreased.
+
+![image-20221019212211346](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221019212211346.png)
 
 ### Code
 
@@ -159,22 +163,57 @@ void setup(void)
 {
 	RCC_PLL_init();                         
 	// Initialize multipleLED_init() for Output
-  multipleLED_init();
+  	multipleLED_init();
 	EXTI_init(GPIOC, BUTTON_PIN, FALL, 0);
 }
 ```
 
-**code EXTI15_10_IRQHandler**
+**code: EXTI15_10_IRQHandler**
 
-​	
+​	The BUTTON_PIN is pin 13 so, it operates in External Line[15:10].  When the BUTTON_PIN interrupt, multipleLED start and cleared by ''clear_pending_EXTI(BUTTON_PIN)".
+
+​	In this lab, I use 4 LED pins and toggled them. In the iteration, 'count' is increased until 4 and reset for turning on 4 LED pins sequentially.
+
+**code: multipleLED_init()**
+
+​	"multipleLED_init" is initialized digital in and out. To match the configuration, the button pin is pull-up mode, and the led pins are push-pull, pull-up and medium-speed mode like below.
+
+```c
+// Digital in --------------------------------------------------------------
+	GPIO_pupd(GPIOC, BUTTON_PIN, EC_PU);
+
+	// Digital out -------------------------------------------------------------
+	GPIO_pupd(GPIOA, 5, EC_PU);
+	GPIO_otype(GPIOA, 5, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 5, MEDIUM_SPEED);
+
+	GPIO_pupd(GPIOA, 6, EC_PU);
+	GPIO_otype(GPIOA, 6, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 6, MEDIUM_SPEED);
+
+	GPIO_pupd(GPIOA, 7, EC_PU);
+	GPIO_otype(GPIOA, 7, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 7, MEDIUM_SPEED);
+
+	GPIO_pupd(GPIOB, 6, EC_PU);
+	GPIO_otype(GPIOB, 6, PUSH_PULL);
+	GPIO_ospeed(GPIOB, 6, MEDIUM_SPEED);
+}
+```
+
+**code: EXTI_init**
+
+​	Exti_init initialize port, pin number, trig type, and priority. 
 
 ### Results
 
 Experiment images and results
 
-> Show experiment images /results
+> ![image-20221019212740823](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221019212740823.png)
 
-Add demo video link
+
+
+**Demo Video:** https://youtu.be/HSpYIvjLOF0
 
 
 
@@ -250,25 +289,92 @@ void SysTick_disable (void)
 
 ### Code
 
-
-
 Your code goes here :
 
-Explain your source code with necessary comments.
+**LAB_EXIT_SysTick.c**
 
 ```c
+#include "stm32f411xe.h"
+#include "ecGPIO.h"
+#include "ecRCC.h"
+#include "ecEXTI.h"
+#include "ecSysTick.h"
 
+static volatile uint32_t count = 0;
+static volatile uint32_t flag = 0;
+
+
+void setup(void);
+void EXTI15_10_IRQHandler(void);	
+
+int main(void) { 
+	// Initialiization --------------------------------------------------------
+		setup();
+	
+	// Inifinite Loop ----------------------------------------------------------
+	while(1){
+
+		
+		if(flag==0){
+			sevensegment_decode(count);
+			delay_ms(1000);
+			count++;
+		if (count >9) count =0;
+		
+	}
+		else if(flag==1){
+			count = 0;
+			sevensegment_decode(count);
+			flag = 0;
+		}
+		SysTick_reset();
+	}
+}
+
+void EXTI15_10_IRQHandler(void) {
+	if (is_pending_EXTI (BUTTON_PIN)) {
+			flag= 1;
+			clear_pending_EXTI(BUTTON_PIN); // cleared by writing '1'
+			}	
+		}
+	
+// Initialiization 
+void setup(void)
+{
+	RCC_PLL_init();
+	SysTick_init(1000); //systick period : 1000=1ms , 2000=0.5ms, 500=2ms
+	sevensegment_init();
+	EXTI_init(GPIOC, BUTTON_PIN, FALL, 0);
+}
 ```
 
+**code: main**
 
+​	Flag distinguishes whether button is pressed or not.  If the flag is 0, seven-segment starts to display up-counting from 0 to 9. If the flag is 1, seven-segment display 0.
+
+**code: EXTI15_10_IRQHandler**
+
+​	The BUTTON_PIN is pin 13 so, it operates in External Line[15:10].  When the BUTTON_PIN interrupt, flag is on  and cleared by ''clear_pending_EXTI(BUTTON_PIN)".
+
+**code: SysTick_init()**
+
+​	"SysTick_init" is initialized and control the systick period. If I insert '1000', then 7-segment display 1 sec per number.
+
+**code: sevensegment_init()**
+
+​	"sevensegment_init" is initialized digital in and out. To match the configuration, the button pin is pull-up mode, and the 7 segment pins are push-pull, NO pull-up-pull-down and medium-speed mode.
+
+**code: EXTI_init**
+
+​	Exti_init initialize port, pin number, trig type, and priority. 
 
 ### Results
 
 Experiment images and results
 
-> 
+> ![image-20221019224046333](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221019224046333.png)
 
-Add demo video link
+demo video: https://youtu.be/HSpYIvjLOF0 
 
 
 
