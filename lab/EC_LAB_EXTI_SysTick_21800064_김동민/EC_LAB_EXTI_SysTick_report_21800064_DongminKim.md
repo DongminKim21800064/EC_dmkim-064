@@ -98,8 +98,7 @@ void clear_pending_EXTI(uint32_t pin);
 ### Circuit Diagram
 
 > You need to include the circuit diagram
-
-![image-20221019114026373](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221019114026373.png)
+![image](https://user-images.githubusercontent.com/91419683/196710318-b4cca415-66c5-47e3-895a-c92c9d0037f3.png)
 
 
 
@@ -121,7 +120,7 @@ void clear_pending_EXTI(uint32_t pin);
    
    To check this phenomenon, i tried to these process. As you can see, the code was  written to repeat the function of turning off the LED while the handler function was  running once, and it was confirmed that the brightness of the LED decreased.
 
-![image-20221019212211346](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221019212211346.png)
+![image](https://user-images.githubusercontent.com/91419683/196710492-00e38b16-28e1-4ad1-ac9b-54c62aeeabc9.png)
 
 ### Code
 
@@ -209,7 +208,7 @@ void setup(void)
 
 Experiment images and results
 
-> ![image-20221019212740823](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221019212740823.png)
+![image](https://user-images.githubusercontent.com/91419683/196710599-0f0b4075-54b8-4089-b8f4-dcfc0aa221a1.png)
 
 
 
@@ -372,7 +371,7 @@ void setup(void)
 
 Experiment images and results
 
-> ![image-20221019224046333](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221019224046333.png)
+![image](https://user-images.githubusercontent.com/91419683/196710868-5fbd20bd-c322-4c84-a83f-6f4d51832092.png)
 
 demo video: https://youtu.be/HSpYIvjLOF0 
 
