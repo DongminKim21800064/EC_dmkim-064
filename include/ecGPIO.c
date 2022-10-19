@@ -19,6 +19,10 @@ void bit_toggle(GPIO_TypeDef* Port, int pin){
 	(Port->ODR) ^= (1UL << pin);
 }
 
+void LED_toggle(void){
+	GPIOA->ODR ^= 1<< LED_PIN;
+}
+
 void GPIO_init(GPIO_TypeDef *Port, int pin, int mode){     
 	// mode  : Input(0), Output(1), AlterFunc(2), Analog(3)   
 	if (Port == GPIOA)
@@ -76,7 +80,7 @@ void GPIO_write(GPIO_TypeDef *Port, int pin, int Output){
 void multipleLED_init(void)
 {
 	RCC_HSI_init();	
-	SysTick_init();
+	//SysTick_init();
 	
 	GPIO_init(GPIOC, BUTTON_PIN, INPUT);  // calls RCC_GPIOC_enable()
 	GPIO_init(GPIOA, 5, OUTPUT);    // calls RCC_GPIOA_enable()
@@ -109,8 +113,7 @@ void multipleLED_init(void)
 
 void multipleLED(uint32_t  num){
 	int count = 0;
-	int number[5][4] = {
-		{0,0,0,0}, // all LEDs are turned off
+	int number[4][4] = {
 		{1,0,0,0}, // PA5 LED is turned on and others turned off 
 		{0,1,0,0}, // PA6 LED is turned on and others turned off
 		{0,0,1,0}, // PA7 LED is turned on and others turned off
@@ -120,12 +123,10 @@ void multipleLED(uint32_t  num){
 		GPIO_write(GPIOA, 6, number[num][1]);
 		GPIO_write(GPIOA, 7, number[num][2]);
 		GPIO_write(GPIOB, 6, number[num][3]);
-	
-		delay_ms(50);
 		
 		count++;
 		if (count >10) count =0;
-		SysTick_reset();
+		//SysTick_reset();
 }
 
 void sevensegment_init(void){
@@ -201,4 +202,34 @@ void sevensegment_decode(uint8_t  num){
 		 
 		
 	}	
-					
+
+	void reverse_sevensegment_decode(uint8_t  num){
+	
+	// 7-segments Reversed TruthTable
+		int number[10][8] = {
+									// A B C D E F G DP
+										{0,0,0,0,1,0,0,1},          //nine
+									  {0,0,0,0,0,0,0,1},          //eight
+                    {0,0,0,1,1,1,1,1},          //seven
+                    {0,1,0,0,0,0,0,1},          //six										
+                    {0,1,0,0,1,0,0,1},          //five										
+                    {1,0,0,1,1,0,0,1},          //four										
+                    {0,0,0,0,1,1,0,1},          //three									     
+                    {0,0,1,0,0,1,0,1},          //two
+										{1,0,0,1,1,1,1,1},          //one
+										{0,0,0,0,0,0,1,1},          //zero
+             
+						};				
+
+		GPIO_write(GPIOA, 8, number[num][0]);  // A
+		GPIO_write(GPIOB, 10, number[num][1]); // B
+		GPIO_write(GPIOA, 7, number[num][2]);  // C
+		GPIO_write(GPIOA, 6, number[num][3]);  // D
+		GPIO_write(GPIOA, 5, number[num][4]);  // E
+		GPIO_write(GPIOA, 9, number[num][5]);  // F
+		GPIO_write(GPIOC, 7, number[num][6]);  // G
+		GPIO_write(GPIOB, 6, number[num][7]);  // DP
+		 
+		
+	}
+			

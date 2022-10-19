@@ -64,6 +64,7 @@ Description      : Distributed to Students for LAB_GPIO
 #endif /* __cplusplus */
 
 void bit_toggle(GPIO_TypeDef* Port, int pin);
+void LED_toggle(void);
 void GPIO_init(GPIO_TypeDef *Port, int pin, int mode);
 void GPIO_write(GPIO_TypeDef *Port, int pin, int Output);
 int  GPIO_read(GPIO_TypeDef *Port, int pin);
@@ -75,6 +76,7 @@ void multipleLED_init(void);
 void multipleLED(uint32_t  num);
 void sevensegment_init(void); 
 void sevensegment_decode(uint8_t  num);
+void reverse_sevensegment_decode(uint8_t  num);
 
  
 #ifdef __cplusplus
