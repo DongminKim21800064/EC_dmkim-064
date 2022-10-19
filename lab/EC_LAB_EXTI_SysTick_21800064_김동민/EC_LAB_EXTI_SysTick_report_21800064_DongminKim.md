@@ -4,7 +4,7 @@
 
 **Author/Partner:** DongMin Kim / SeongJun Park
 
-**Github:**  
+**Github:**  https://github.com/DongminKim21800064/EC_dmkim-064/tree/main/lab/EC_LAB_EXTI_SysTick_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC
 
 **Demo Video:**  https://youtu.be/HSpYIvjLOF0
 
@@ -125,7 +125,7 @@ void clear_pending_EXTI(uint32_t pin);
 
 ### Code
 
-Your code goes here :
+Your code goes here : https://github.com/DongminKim21800064/EC_dmkim-064/tree/main/lab/EC_LAB_EXTI_SysTick_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC
 
 ##### LAB_EXIT.c
 
@@ -289,7 +289,7 @@ void SysTick_disable (void)
 
 ### Code
 
-Your code goes here :
+Your code goes here : https://github.com/DongminKim21800064/EC_dmkim-064/tree/main/lab/EC_LAB_EXTI_SysTick_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC
 
 **LAB_EXIT_SysTick.c**
 
@@ -380,17 +380,526 @@ demo video: https://youtu.be/HSpYIvjLOF0
 
 ### Analysis
 
-
-
-
+​	Through this experiment, I use the SysTick interrupt functions to using external interrupts and periodically execute delay. In  addition, I understand the difference between Polling and Interrupt.
 
 ### Reference
 
-Complete list of all references used (github, blog, paper, etc)
+**Polling and Interrupt**
+
+- https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=sheep_horse&logNo=221450970976
+
+**Lecture provided**
+
+-  https://github.com/ykkimhgu/EC-student/tree/main/tutorial/tutorial-student
 
 
 
 ### Troubleshooting
 
+Q1: 
 
+SysTick_init() function is not the function which decide delay time. How to set delay time? 
+
+A1: 
+
+SysTick_init() function is the function which set the time period about SysTick_Handler().  Accordingly, since the time period is 1ms, a delay of 1 second may be implemented by  continuously executing the handler function 1000 times.
+
+Q2:
+
+Why does the function "void EXTI15_10_IRQHandler(void)" operating   without declaring like "EXTI15_10_IRQHandler()" in the "main" function? For example, "setup" function declared in "main"!
+
+A2:  
+
+Becuase, "EXTI15_10_IRQHandler" is in the device program.
+
+![image-20221019231029028](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221019231029028.png)
+
+![image-20221019231007204](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221019231007204.png) 
+
+
+
+### Appendix
+
+##### ecGPIO.c
+
+```c
+/*----------------------------------------------------------------\
+@ Embedded Controller by Young-Keun Kim - Handong Global University
+Author           : SSS Lab
+Created          : 05-03-2021
+Modified         : 10-10-2022 by DongMin Kim
+Language/ver     : C++ in Keil uVision
+
+Description      : Distributed to Students for LAB_GPIO
+/----------------------------------------------------------------*/
+
+
+
+#include "stm32f4xx.h"
+#include "stm32f411xe.h"
+#include "ecGPIO.h"
+#include "ecSysTick.h"
+
+void bit_toggle(GPIO_TypeDef* Port, int pin){
+	(Port->ODR) ^= (1UL << pin);
+}
+
+void LED_toggle(void){
+	GPIOA->ODR ^= 1<< LED_PIN;
+}
+
+void GPIO_init(GPIO_TypeDef *Port, int pin, int mode){     
+	// mode  : Input(0), Output(1), AlterFunc(2), Analog(3)   
+	if (Port == GPIOA)
+		RCC_GPIOA_enable();
+	if (Port == GPIOB)
+		RCC_GPIOB_enable();
+	if (Port == GPIOC)
+		RCC_GPIOC_enable();
+
+	GPIO_mode(Port, pin, mode);
+	
+}
+
+
+// GPIO Mode          : Input(00), Output(01), AlterFunc(10), Analog(11)
+void GPIO_mode(GPIO_TypeDef *Port, int pin, int mode){
+   Port->MODER &= ~(3UL<<(2*pin));     
+   Port->MODER |= mode <<(2*pin);    
+}
+
+
+// GPIO Speed          : Low speed (00), Medium speed (01), Fast speed (10), High speed (11)
+void GPIO_ospeed(GPIO_TypeDef *Port, int pin, int speed){
+	  Port->OSPEEDR &= 	~(3UL<<(2*pin));
+		Port->OSPEEDR |=  	speed <<(2*pin);								 //10:Fast Speed
+}
+
+// GPIO Output Type: Output push-pull (0, reset), Output open drain (1)
+void GPIO_otype(GPIO_TypeDef *Port, int pin, int type){
+		Port->OTYPER &= 		~(type<<(pin));							 	// 0:Push-Pull   
+}
+
+// GPIO Push-Pull    : No pull-up, pull-down (00), Pull-up (01), Pull-down (10), Reserved (11)
+void GPIO_pupd(GPIO_TypeDef *Port, int pin, int pupd){
+   	Port->PUPDR &= 	~(3UL<<(2*pin));
+		Port->PUPDR  |=		pupd<<(2*pin);									// 10: Pull-UP		
+}
+
+int GPIO_read(GPIO_TypeDef *Port, int pin){
+
+	unsigned int btVal=0;
+			//Read bit value of Button
+			btVal=(Port->IDR>>pin) & 1UL;	
+	return btVal;    	//[TO-DO] YOUR CODE GOES HERE	
+}
+
+
+
+void GPIO_write(GPIO_TypeDef *Port, int pin, int Output){
+	Port->ODR &= ~(1UL<<(pin));
+  Port->ODR |= (Output <<(pin));
+}
+
+
+void multipleLED_init(void)
+{
+	RCC_HSI_init();	
+	//SysTick_init();
+	
+	GPIO_init(GPIOC, BUTTON_PIN, INPUT);  // calls RCC_GPIOC_enable()
+	GPIO_init(GPIOA, 5, OUTPUT);    // calls RCC_GPIOA_enable()
+	GPIO_init(GPIOA, 6, OUTPUT);
+	GPIO_init(GPIOA, 7, OUTPUT);
+	GPIO_init(GPIOB, 6, OUTPUT);
+
+	// Digital in --------------------------------------------------------------
+	GPIO_pupd(GPIOC, BUTTON_PIN, EC_PU);
+
+	// Digital out -------------------------------------------------------------
+	GPIO_pupd(GPIOA, 5, EC_PU);
+	GPIO_otype(GPIOA, 5, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 5, MEDIUM_SPEED);
+
+	GPIO_pupd(GPIOA, 6, EC_PU);
+	GPIO_otype(GPIOA, 6, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 6, MEDIUM_SPEED);
+
+	GPIO_pupd(GPIOA, 7, EC_PU);
+	GPIO_otype(GPIOA, 7, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 7, MEDIUM_SPEED);
+
+	GPIO_pupd(GPIOB, 6, EC_PU);
+	GPIO_otype(GPIOB, 6, PUSH_PULL);
+	GPIO_ospeed(GPIOB, 6, MEDIUM_SPEED);
+
+}
+
+
+void multipleLED(uint32_t  num){
+	int count = 0;
+	int number[4][4] = {
+		{1,0,0,0}, // PA5 LED is turned on and others turned off 
+		{0,1,0,0}, // PA6 LED is turned on and others turned off
+		{0,0,1,0}, // PA7 LED is turned on and others turned off
+		{0,0,0,1}, // PB6 LED is turned on and others turned off
+	};
+		GPIO_write(GPIOA, 5, number[num][0]);
+		GPIO_write(GPIOA, 6, number[num][1]);
+		GPIO_write(GPIOA, 7, number[num][2]);
+		GPIO_write(GPIOB, 6, number[num][3]);
+		
+		count++;
+		if (count >10) count =0;
+		//SysTick_reset();
+}
+
+void sevensegment_init(void){
+
+	GPIO_init(GPIOA, 8, OUTPUT);		// A
+	GPIO_init(GPIOB, 10, OUTPUT);		// B	
+	GPIO_init(GPIOA, 7, OUTPUT);		// C
+	GPIO_init(GPIOA, 6, OUTPUT);		// D
+	GPIO_init(GPIOA, 5, OUTPUT);		// E
+	GPIO_init(GPIOA, 9, OUTPUT);		// F
+	GPIO_init(GPIOC, 7, OUTPUT);		// G
+	GPIO_init(GPIOB, 6, OUTPUT);		// DP
+	
+	//Set BUTTON_PIN to PULL-UP Mode
+	GPIO_pupd(GPIOC, BUTTON_PIN, EC_PU); 			// PULL-UP  
+	
+	//Set 7segment_PIN to NO PULL-UP, PULL-DOWN Mode
+	GPIO_pupd(GPIOA, 5, NONE); // no pull-up, pull-down
+	GPIO_pupd(GPIOA, 6, NONE);
+	GPIO_pupd(GPIOA, 7, NONE);
+	GPIO_pupd(GPIOA, 8, NONE);
+	GPIO_pupd(GPIOA, 9, NONE);
+	GPIO_pupd(GPIOB, 6, NONE);
+	GPIO_pupd(GPIOB,10, NONE);
+	GPIO_pupd(GPIOC, 7, NONE);
+	
+	//Set 7segment_PIN to Push-Pull Mode
+	GPIO_otype(GPIOA, 5, PUSH_PULL); //push-pull
+	GPIO_otype(GPIOA, 6, PUSH_PULL);
+	GPIO_otype(GPIOA, 7, PUSH_PULL);
+	GPIO_otype(GPIOA, 8, PUSH_PULL);
+	GPIO_otype(GPIOA, 9, PUSH_PULL);
+	GPIO_otype(GPIOB, 6, PUSH_PULL);
+	GPIO_otype(GPIOB,10, PUSH_PULL);
+	GPIO_otype(GPIOC, 7, PUSH_PULL);
+	
+	//Set 7segment_PIN to mid speed Mode
+	GPIO_ospeed(GPIOA, 5, MEDIUM_SPEED ); //mid-speed
+  GPIO_ospeed(GPIOA, 6, MEDIUM_SPEED );
+	GPIO_ospeed(GPIOA, 7, MEDIUM_SPEED );
+	GPIO_ospeed(GPIOA, 8, MEDIUM_SPEED );
+	GPIO_ospeed(GPIOA, 9, MEDIUM_SPEED );
+	GPIO_ospeed(GPIOB, 6, MEDIUM_SPEED );
+	GPIO_ospeed(GPIOB,10, MEDIUM_SPEED );
+	GPIO_ospeed(GPIOC, 7, MEDIUM_SPEED );
+}
+
+void sevensegment_decode(uint8_t  num){
+	
+	// 7-segments Reversed TruthTable
+		int number[10][8] = {
+									// A B C D E F G DP
+										{0,0,0,0,0,0,1,1},          //zero
+                    {1,0,0,1,1,1,1,1},          //one
+                    {0,0,1,0,0,1,0,1},          //two
+                    {0,0,0,0,1,1,0,1},          //three
+                    {1,0,0,1,1,0,0,1},          //four
+                    {0,1,0,0,1,0,0,1},          //five
+                    {0,1,0,0,0,0,0,1},          //six
+                    {0,0,0,1,1,1,1,1},          //seven
+                    {0,0,0,0,0,0,0,1},          //eight
+                    {0,0,0,0,1,0,0,1},          //nine
+						};				
+
+		GPIO_write(GPIOA, 8, number[num][0]);  // A
+		GPIO_write(GPIOB, 10, number[num][1]); // B
+		GPIO_write(GPIOA, 7, number[num][2]);  // C
+		GPIO_write(GPIOA, 6, number[num][3]);  // D
+		GPIO_write(GPIOA, 5, number[num][4]);  // E
+		GPIO_write(GPIOA, 9, number[num][5]);  // F
+		GPIO_write(GPIOC, 7, number[num][6]);  // G
+		GPIO_write(GPIOB, 6, number[num][7]);  // DP
+		 
+		
+	}	
+
+	void reverse_sevensegment_decode(uint8_t  num){
+	
+	// 7-segments Reversed TruthTable
+		int number[10][8] = {
+									// A B C D E F G DP
+										{0,0,0,0,1,0,0,1},          //nine
+									  {0,0,0,0,0,0,0,1},          //eight
+                    {0,0,0,1,1,1,1,1},          //seven
+                    {0,1,0,0,0,0,0,1},          //six										
+                    {0,1,0,0,1,0,0,1},          //five										
+                    {1,0,0,1,1,0,0,1},          //four										
+                    {0,0,0,0,1,1,0,1},          //three									     
+                    {0,0,1,0,0,1,0,1},          //two
+										{1,0,0,1,1,1,1,1},          //one
+										{0,0,0,0,0,0,1,1},          //zero
+             
+						};				
+
+		GPIO_write(GPIOA, 8, number[num][0]);  // A
+		GPIO_write(GPIOB, 10, number[num][1]); // B
+		GPIO_write(GPIOA, 7, number[num][2]);  // C
+		GPIO_write(GPIOA, 6, number[num][3]);  // D
+		GPIO_write(GPIOA, 5, number[num][4]);  // E
+		GPIO_write(GPIOA, 9, number[num][5]);  // F
+		GPIO_write(GPIOC, 7, number[num][6]);  // G
+		GPIO_write(GPIOB, 6, number[num][7]);  // DP
+		 
+		
+	}
+			
+```
+
+##### ecEXTI.h
+
+```c
+#ifndef __EC_EXTI_H
+#define __EC_EXTI_H
+
+#include "stm32f411xe.h"
+
+#define FALL 0
+#define RISE 1
+#define BOTH 2
+
+#define PAx_PIN 0
+#define PBx_PIN 1
+#define PCx_PIN 2
+#define PDx_PIN 3
+
+
+
+#ifdef __cplusplus
+ extern "C" {
+#endif /* __cplusplus */
+
+void EXTI_init(GPIO_TypeDef *Port, int pin, int trig, int priority);
+void EXTI_enable(uint32_t pin);
+void EXTI_disable(uint32_t pin);
+uint32_t is_pending_EXTI(uint32_t pin);
+void clear_pending_EXTI(uint32_t pin);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+	 
+#endif
+```
+
+##### ecEXTI.c
+
+```c
+#include "ecGPIO.h"
+#include "ecSysTick.h"
+#include "ecEXTI.h"
+
+
+void EXTI_init(GPIO_TypeDef *Port, int Pin, int trig_type,int priority){
+
+	// SYSCFG peripheral clock enable	
+	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;		
+	
+	// Connect External Line to the GPIO
+	int EXTICR_port;
+	if			(Port == GPIOA) EXTICR_port = 0;
+	else if	(Port == GPIOB) EXTICR_port = 1;
+	else if	(Port == GPIOC) EXTICR_port = 2;
+	else if	(Port == GPIOD) EXTICR_port = 3;
+	else 										EXTICR_port = 4;
+	
+	if(Port == GPIOA)
+		{
+		SYSCFG -> EXTICR[Pin/4] &= ~(0xF << 4*(Pin%4)); // PC13   ~(1111<<4)
+		SYSCFG -> EXTICR[Pin/4] |= PAx_PIN <<4*(Pin%4) ; // 0x 0020 (0000 0000 0010 0000) choose MUX
+		}
+		else if(Port == GPIOB)
+		{
+		SYSCFG -> EXTICR[Pin/4] &= ~(0xF << 4*(Pin%4)); // PC13   ~(1111<<4)
+		SYSCFG -> EXTICR[Pin/4] |= PBx_PIN <<4*(Pin%4) ; // 0x 0020 (0000 0000 0010 0000) choose MUX
+		}
+		else if(Port == GPIOC)
+		{
+		SYSCFG -> EXTICR[Pin/4] &= ~(0xF << 4*(Pin%4)); // PC13   ~(1111<<4)
+		SYSCFG -> EXTICR[Pin/4] |= PCx_PIN <<4*(Pin%4) ; // 0x 0020 (0000 0000 0010 0000) choose MUX
+		}
+	// Configure Trigger edge
+	if (trig_type == FALL) EXTI->FTSR |= 1<<Pin;   // Falling trigger enable 
+	else if	(trig_type == RISE) EXTI->RTSR |= 1<<Pin;   // Rising trigger enable 
+	else if	(trig_type == BOTH) {			// Both falling/rising trigger enable
+		EXTI->RTSR |= 1<<Pin; 
+		EXTI->FTSR |= 1<<Pin;
+	} 
+	
+	// Configure Interrupt Mask (Interrupt enabled)
+	EXTI->IMR  |= 1<<Pin;     // not masked
+	
+	
+	// NVIC(IRQ) Setting
+	int EXTI_IRQn = 0;
+	
+	if (Pin < 5) 	EXTI_IRQn = Pin+6;
+	else if	(Pin < 10) 	EXTI_IRQn = EXTI9_5_IRQn;
+	else 			EXTI_IRQn = EXTI15_10_IRQn;
+								
+	NVIC_SetPriority(EXTI_IRQn, priority);	// EXTI priority
+	NVIC_EnableIRQ(EXTI_IRQn); 	// EXTI IRQ enable
+}
+
+
+void EXTI_enable(uint32_t pin) {
+	EXTI->IMR |= 1<<pin;     // not masked (i.e., Interrupt enabled)
+}
+void EXTI_disable(uint32_t pin) {
+	EXTI->IMR |= 0<<pin;     // masked (i.e., Interrupt disabled)
+}
+
+uint32_t is_pending_EXTI(uint32_t pin){
+	//uint32_t EXTI_PRx = ;     	// check  EXTI pending 	
+	return ((EXTI->PR & (1UL<<pin)) == (1UL<<pin));
+}
+
+
+void clear_pending_EXTI(uint32_t pin){
+	EXTI->PR |= 1<<pin ;     // clear EXTI pending 
+}
+
+```
+
+**ecSysTick.h**
+
+```c
+/**
+******************************************************************************
+* @author   DongMin Kim 21800064
+* @Mod     -
+******************************************************************************
+*/
+
+#ifndef __EC_SYSTICK_H
+#define __EC_SYSTICK_H
+
+#include "stm32f4xx.h"
+#include "ecRCC.h"
+#include <stdint.h>
+
+#ifdef __cplusplus
+ extern "C" {
+#endif /* __cplusplus */
+
+
+void SysTick_init(uint32_t Ticks);
+void SysTick_Handler(void);
+void SysTick_counter();
+void delay_ms(uint32_t msec);
+void SysTick_reset(void);
+uint32_t SysTick_val(void);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif
+```
+
+**ecSysTick.c**
+
+```c
+/**
+******************************************************************************
+* @author   DongMin Kim 21800064
+* @Mod     -
+******************************************************************************
+*/
+
+#include "ecSysTick.h"
+
+
+
+#define MCU_CLK_PLL 84000000
+#define MCU_CLK_HSI 16000000
+
+volatile uint32_t msTicks;
+
+//EC_SYSTEM_CLK
+
+void SysTick_init(uint32_t Ticks){	
+	//  SysTick Control and Status Register
+	SysTick->CTRL = 0;											// Disable SysTick IRQ and SysTick Counter
+
+	// Select processor clock
+	// 1 = processor clock;  0 = external clock
+	SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
+
+	// uint32_t MCU_CLK=EC_SYSTEM_CLK
+	// SysTick Reload Value Register
+	SysTick->LOAD = (MCU_CLK_PLL / (Ticks)) - 1;						// 1ms, for HSI PLL = 84MHz.
+
+	// SysTick Current Value Register
+	SysTick->VAL = 0;
+
+	// Enables SysTick exception request
+	// 1 = counting down to zero asserts the SysTick exception request
+	SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
+	
+	// Enable SysTick IRQ and SysTick Timer
+	SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+		
+	NVIC_SetPriority(SysTick_IRQn, 16);		// Set Priority to 1
+	NVIC_EnableIRQ(SysTick_IRQn);			// Enable interrupt in NVIC
+}
+
+
+
+void SysTick_Handler(void){
+	SysTick_counter();	
+}
+
+void SysTick_counter(){
+	msTicks++;
+}	
+
+
+void delay_ms (uint32_t mesc){
+  uint32_t curTicks;
+
+  curTicks = msTicks;
+  while ((msTicks - curTicks) < mesc);
+	
+	msTicks = 0;
+}
+
+//void delay_ms(uint32_t msec){
+//	uint32_t now=SysTick_val(); 
+//	if (msec>5000) msec=5000;
+//	if (msec<1) msec=1;
+//	while ((now - SysTick_val()) < msec);
+//}
+
+
+void SysTick_reset(void)
+{
+	// SysTick Current Value Register
+	SysTick->VAL = 0;
+}
+
+uint32_t SysTick_val(void) {
+	return SysTick->VAL;
+}
+
+//void SysTick_counter(){
+//	msTicks++;
+//	if(msTicks%1000 == 0) count++;
+//}	
+
+```
 
