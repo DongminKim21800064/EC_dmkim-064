@@ -120,7 +120,8 @@ void clear_pending_EXTI(uint32_t pin);
    
    To check this phenomenon, i tried to these process. As you can see, the code was  written to repeat the function of turning off the LED while the handler function was  running once, and it was confirmed that the brightness of the LED decreased.
 
-![image](https://user-images.githubusercontent.com/91419683/196710492-00e38b16-28e1-4ad1-ac9b-54c62aeeabc9.png)
+![image](https://user-images.githubusercontent.com/91419683/196711255-fb5c3b02-f929-4f5f-94be-ace6a3134936.png)
+
 
 ### Code
 
