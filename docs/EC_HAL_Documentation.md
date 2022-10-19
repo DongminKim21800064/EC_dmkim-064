@@ -37,6 +37,14 @@ MCU:  STM32F411RE (Nucleo-64)
     + [GPIO_otype\(\)](#gpio_otype)
     + [GPIO_pupd\(\)](#gpio_pupd)
 
+  * [Interrupt EXTI](#interrupt-EXTI)
+    + [Header File](#header-file)
+    + [EXTI_init\(\)](#exti_init)
+    + [EXTI_enable\(\)](#exti enable)
+    + [EXTI_disable\(\)](#exti disable)
+    + [is_pending_EXTI\(\)](#is pending exti)
+    + [clear_pending_EXTI\(\)](#clear pending exti)
+
 ---
 
 ## GPIO Digital InOut 
