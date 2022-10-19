@@ -412,9 +412,9 @@ A2:
 
 Becuase, "EXTI15_10_IRQHandler" is in the device program.
 
-![image-20221019231029028](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221019231029028.png)
+![image](https://user-images.githubusercontent.com/91419683/196717147-1c315e8d-e73a-4b21-9ee8-6ad53472d624.png)
 
-![image-20221019231007204](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221019231007204.png) 
+![image](https://user-images.githubusercontent.com/91419683/196717180-56dcd0fc-7de1-40d1-a2c1-cbd9c88ccf81.png)
 
 
 
