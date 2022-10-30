@@ -173,7 +173,8 @@ You need to observe how the PWM signal output is generated as input button is pu
 
 > You need to include the circuit diagram
 
-![image-20221030140431190](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221030140431190.png)
+![image](https://user-images.githubusercontent.com/91419683/198887102-15df3577-b4a8-4750-8764-8a868d3107ef.png)
+
 
 ### Discussion
 
@@ -183,15 +184,10 @@ You need to observe how the PWM signal output is generated as input button is pu
   >
   > Second, the duty ratio is determined by CCR (Compare Capture value) and CNT (Counter value). The counter goes up from 0 to ARR. CCR gives a reference signal among them. If CCR<CNT, PWM output becomes HIGH, and if CCR>CNT, it becomes LOW.
   >
-  > ![img](file:///C:/Users/ASUS/AppData/Local/Temp/msohtmlclip1/01/clip_image002.png)
-  >
-  > ![img](file:///C:/Users/ASUS/AppData/Local/Temp/msohtmlclip1/01/clip_image004.png)
-  >
-  > ![img](file:///C:/Users/ASUS/AppData/Local/Temp/msohtmlclip1/01/clip_image006.png)
-  >
-  > ![img](file:///C:/Users/ASUS/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png)
+![image](https://user-images.githubusercontent.com/91419683/198887221-2936ad5a-9b18-400e-849e-414a19d60e32.png)
 
-1. What is the smallest and highest PWM frequency that can be generated for Q1?
+
+2. What is the smallest and highest PWM frequency that can be generated for Q1?
 
    > Prescaler register is 16bit. So that the value cna be 0 to 65,535.
    >
@@ -203,18 +199,16 @@ You need to observe how the PWM signal output is generated as input button is pu
    >
    > In 16bit
    >
-   > ![img](file:///C:/Users/ASUS/AppData/Local/Temp/msohtmlclip1/01/clip_image002.png)
-   >
-   > ![img](file:///C:/Users/ASUS/AppData/Local/Temp/msohtmlclip1/01/clip_image004.png)
+![image](https://user-images.githubusercontent.com/91419683/198887277-5e44c79b-4fa2-4196-8455-103b019044b8.png)
+
+
    >
    > In 32bit
    >
-   > ![img](file:///C:/Users/ASUS/AppData/Local/Temp/msohtmlclip1/01/clip_image002.png)
-   >
-   > ![img](file:///C:/Users/ASUS/AppData/Local/Temp/msohtmlclip1/01/clip_image004.png)
-   
-   
 
+   ![image](https://user-images.githubusercontent.com/91419683/198887294-012a8aa3-1661-401a-91a5-35319d636745.png)
+
+   
 
 
 ### Code
@@ -366,17 +360,18 @@ void EXTI15_10_IRQHandler(void) {   		// EXTI Button interrupt
 
 **PWM 0° oscilloscope figure**
 
-![0degree](C:\Users\ASUS\OneDrive\바탕 화면\7학기\Embeded\LAB\PWM자료\0degree.bmp)
+![image](https://user-images.githubusercontent.com/91419683/198887369-5bcb38e2-872c-48dc-a925-bf5eec28d5b3.png)
+
 
 **PWM 90° oscilloscope figure**
 
-![90degree](C:\Users\ASUS\OneDrive\바탕 화면\7학기\Embeded\LAB\PWM자료\90degree.bmp)
+![image](https://user-images.githubusercontent.com/91419683/198887378-c6db836d-b7fe-48ea-b88e-f17a92ff240b.png)
 
 **PWM 180° oscilloscope figure**
 
-![180degree](C:\Users\ASUS\OneDrive\바탕 화면\7학기\Embeded\LAB\PWM자료\180degree.bmp)
+![image](https://user-images.githubusercontent.com/91419683/198887390-d6742701-be57-4ca1-8581-58a9583ecd6b.png)
 
-![image-20221031001549542](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221031001549542.png)
+![image](https://user-images.githubusercontent.com/91419683/198887398-1f8d5afb-6c11-469d-9d7e-90340d9bf7bd.png)
 
 In this experiment, the PWM period was set to 20 ms (50 Hz). Therefore, Duty ratio will be 2.5% , 7.5%, and 12.5% each at 0°, 90°, and 180°.
 
@@ -386,7 +381,7 @@ As you can see, the frequency of PWM observe 50.40Hz , and the duty cycle calcul
 
 > Show experiment images /results
 
-![image-20221030154906502](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221030154906502.png)
+![image](https://user-images.githubusercontent.com/91419683/198887406-3ca77fef-2fda-4e4b-ba9e-b42697ffe26c.png)
 
 **Demo video :** https://www.youtube.com/watch?v=JqZM9r-GVFc
 
@@ -412,11 +407,11 @@ https://ykkim.gitbook.io/ec/course/lab/lab-timer-and-pwm
 
 - Increase the angle of RC servo motor from 0° to 180° with a step of 10° every 500msec. In this case I must observe 19 steps which is 0° to 180° with a step of 10°. But only 18steps observed. I tested like below
 
-  ![image-20221030144139907](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221030144139907.png)
+![image](https://user-images.githubusercontent.com/91419683/198887421-844c17e0-37fd-4678-a0d5-e808ff468aff.png)
 
   As a result, it was found that the servomotor was in the same position when it was 0° and 10°.  I thought the cause of this phenomenon was 'DEAD ZONE', and I raised the initial value of pulse width by 0.1 ms
 
-![image-20221030144619148](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221030144619148.png)
+![image](https://user-images.githubusercontent.com/91419683/198887427-dba184c7-e668-4248-b858-02c9f7443e62.png)
 
 As I expected, when the initial value of pulse width was raised, all 19 steps were observed. For more information, please refer to the YouTube.
 
