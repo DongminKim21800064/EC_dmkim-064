@@ -1,9 +1,12 @@
-/**
-******************************************************************************
-* @author   DongMin Kim 21800064
-* @Mod     -
-******************************************************************************
-*/
+/*----------------------------------------------------------------\
+@ Embedded Controller by Young-Keun Kim - Handong Global University
+Author           : SSS Lab
+Created          : 05-03-2021
+Modified         : 10-10-2022 by DongMin Kim
+Language/ver     : C++ in Keil uVision
+
+Description      : Distributed to Students for LAB_GPIO
+/----------------------------------------------------------------*/
 #ifndef __EC_EXTI_H
 #define __EC_EXTI_H
 

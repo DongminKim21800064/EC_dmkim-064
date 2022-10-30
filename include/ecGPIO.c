@@ -2,7 +2,7 @@
 @ Embedded Controller by Young-Keun Kim - Handong Global University
 Author           : SSS Lab
 Created          : 05-03-2021
-Modified         : 10-10-2022 by DongMin Kim
+Modified         : 10-24-2022 by DongMin Kim
 Language/ver     : C++ in Keil uVision
 
 Description      : Distributed to Students for LAB_GPIO
@@ -34,6 +34,17 @@ void GPIO_init(GPIO_TypeDef *Port, int pin, int mode){
 
 	GPIO_mode(Port, pin, mode);
 	
+}
+
+void GPIO_output(GPIO_TypeDef *Port, int pin, int type, int pupd, int speed){
+		// Set TYPE
+		Port->OTYPER &= 		~(type<<(pin));							 	// 0:Push-Pull
+		// Set PUPD
+		Port->PUPDR &= 	~(3UL<<(2*pin));
+		Port->PUPDR  |=		pupd<<(2*pin);									// 10: Pull-UP
+		// Set SPEED
+		Port->OSPEEDR &= 	~(3UL<<(2*pin));
+		Port->OSPEEDR |=  	speed <<(2*pin);
 }
 
 
@@ -77,57 +88,70 @@ void GPIO_write(GPIO_TypeDef *Port, int pin, int Output){
 }
 
 
-void multipleLED_init(void)
-{
+void multipleLED_init(void){
 	RCC_HSI_init();	
 	//SysTick_init();
 	
-	GPIO_init(GPIOC, BUTTON_PIN, INPUT);  // calls RCC_GPIOC_enable()
-	GPIO_init(GPIOA, 5, OUTPUT);    // calls RCC_GPIOA_enable()
-	GPIO_init(GPIOA, 6, OUTPUT);
-	GPIO_init(GPIOA, 7, OUTPUT);
-	GPIO_init(GPIOB, 6, OUTPUT);
+	
+	GPIO_init(GPIOA, 0, OUTPUT);    // calls RCC_GPIOA_enable()
+	GPIO_init(GPIOA, 1, OUTPUT);
+	GPIO_init(GPIOB, 0, OUTPUT);
+	GPIO_init(GPIOC, 1, OUTPUT);
 
-	// Digital in --------------------------------------------------------------
-	GPIO_pupd(GPIOC, BUTTON_PIN, EC_PU);
+
 
 	// Digital out -------------------------------------------------------------
-	GPIO_pupd(GPIOA, 5, EC_PU);
-	GPIO_otype(GPIOA, 5, PUSH_PULL);
-	GPIO_ospeed(GPIOA, 5, MEDIUM_SPEED);
+	GPIO_pupd(GPIOA, 0, NONE);
+	GPIO_otype(GPIOA, 0, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 0, MEDIUM_SPEED);
 
-	GPIO_pupd(GPIOA, 6, EC_PU);
-	GPIO_otype(GPIOA, 6, PUSH_PULL);
-	GPIO_ospeed(GPIOA, 6, MEDIUM_SPEED);
+	GPIO_pupd(GPIOA, 1, NONE);
+	GPIO_otype(GPIOA, 1, PUSH_PULL);
+	GPIO_ospeed(GPIOA, 1, MEDIUM_SPEED);
 
-	GPIO_pupd(GPIOA, 7, EC_PU);
-	GPIO_otype(GPIOA, 7, PUSH_PULL);
-	GPIO_ospeed(GPIOA, 7, MEDIUM_SPEED);
+	GPIO_pupd(GPIOB, 0, NONE);
+	GPIO_otype(GPIOB, 0, PUSH_PULL);
+	GPIO_ospeed(GPIOB, 0, MEDIUM_SPEED);
 
-	GPIO_pupd(GPIOB, 6, EC_PU);
-	GPIO_otype(GPIOB, 6, PUSH_PULL);
-	GPIO_ospeed(GPIOB, 6, MEDIUM_SPEED);
+	GPIO_pupd(GPIOC, 1, NONE);
+	GPIO_otype(GPIOC, 1, PUSH_PULL);
+	GPIO_ospeed(GPIOC, 1, MEDIUM_SPEED);
 
 }
 
 
-void multipleLED(uint32_t  num){
+void multipleLED(uint32_t  num){   // Displaying 4xLEDs 0000 ~ 1111
 	int count = 0;
-	int number[4][4] = {
-		{1,0,0,0}, // PA5 LED is turned on and others turned off 
-		{0,1,0,0}, // PA6 LED is turned on and others turned off
-		{0,0,1,0}, // PA7 LED is turned on and others turned off
-		{0,0,0,1}, // PB6 LED is turned on and others turned off
-	};
-		GPIO_write(GPIOA, 5, number[num][0]);
-		GPIO_write(GPIOA, 6, number[num][1]);
-		GPIO_write(GPIOA, 7, number[num][2]);
-		GPIO_write(GPIOB, 6, number[num][3]);
+	int number[16][4] = {
+		{0,0,0,0}, 
+		{0,0,0,1}, 
+		{0,0,1,0}, 
+		{0,0,1,1}, 
+		{0,1,0,0},
+		{0,1,0,1},
+		{0,1,1,0},
+		{0,1,1,1},
+		{1,0,0,0},
+		{1,0,0,1},
+		{1,0,1,0},
+		{1,0,1,1},
+		{1,1,0,0},
+		{1,1,0,1},
+		{1,1,1,0},
+		{1,1,1,1}, 
+			};
+		GPIO_write(GPIOA, 0, number[num][0]);
+		GPIO_write(GPIOA, 1, number[num][1]);
+		GPIO_write(GPIOB, 0, number[num][2]);
+		GPIO_write(GPIOC, 1, number[num][3]);
 		
 		count++;
 		if (count >10) count =0;
 		//SysTick_reset();
 }
+
+
+
 
 void sevensegment_init(void){
 
@@ -135,7 +159,7 @@ void sevensegment_init(void){
 	GPIO_init(GPIOB, 10, OUTPUT);		// B	
 	GPIO_init(GPIOA, 7, OUTPUT);		// C
 	GPIO_init(GPIOA, 6, OUTPUT);		// D
-	GPIO_init(GPIOA, 5, OUTPUT);		// E
+	GPIO_init(GPIOB, 9, OUTPUT);		// E
 	GPIO_init(GPIOA, 9, OUTPUT);		// F
 	GPIO_init(GPIOC, 7, OUTPUT);		// G
 	GPIO_init(GPIOB, 6, OUTPUT);		// DP
@@ -144,7 +168,7 @@ void sevensegment_init(void){
 	GPIO_pupd(GPIOC, BUTTON_PIN, EC_PU); 			// PULL-UP  
 	
 	//Set 7segment_PIN to NO PULL-UP, PULL-DOWN Mode
-	GPIO_pupd(GPIOA, 5, NONE); // no pull-up, pull-down
+	GPIO_pupd(GPIOB, 9, NONE); // no pull-up, pull-down
 	GPIO_pupd(GPIOA, 6, NONE);
 	GPIO_pupd(GPIOA, 7, NONE);
 	GPIO_pupd(GPIOA, 8, NONE);
@@ -154,7 +178,7 @@ void sevensegment_init(void){
 	GPIO_pupd(GPIOC, 7, NONE);
 	
 	//Set 7segment_PIN to Push-Pull Mode
-	GPIO_otype(GPIOA, 5, PUSH_PULL); //push-pull
+	GPIO_otype(GPIOB, 9, PUSH_PULL); //push-pull
 	GPIO_otype(GPIOA, 6, PUSH_PULL);
 	GPIO_otype(GPIOA, 7, PUSH_PULL);
 	GPIO_otype(GPIOA, 8, PUSH_PULL);
@@ -164,7 +188,7 @@ void sevensegment_init(void){
 	GPIO_otype(GPIOC, 7, PUSH_PULL);
 	
 	//Set 7segment_PIN to mid speed Mode
-	GPIO_ospeed(GPIOA, 5, MEDIUM_SPEED ); //mid-speed
+	GPIO_ospeed(GPIOB, 9, MEDIUM_SPEED ); //mid-speed
   GPIO_ospeed(GPIOA, 6, MEDIUM_SPEED );
 	GPIO_ospeed(GPIOA, 7, MEDIUM_SPEED );
 	GPIO_ospeed(GPIOA, 8, MEDIUM_SPEED );
@@ -195,7 +219,7 @@ void sevensegment_decode(uint8_t  num){
 		GPIO_write(GPIOB, 10, number[num][1]); // B
 		GPIO_write(GPIOA, 7, number[num][2]);  // C
 		GPIO_write(GPIOA, 6, number[num][3]);  // D
-		GPIO_write(GPIOA, 5, number[num][4]);  // E
+		GPIO_write(GPIOB, 9, number[num][4]);  // E
 		GPIO_write(GPIOA, 9, number[num][5]);  // F
 		GPIO_write(GPIOC, 7, number[num][6]);  // G
 		GPIO_write(GPIOB, 6, number[num][7]);  // DP
@@ -203,7 +227,7 @@ void sevensegment_decode(uint8_t  num){
 		
 	}	
 
-	void reverse_sevensegment_decode(uint8_t  num){
+void reverse_sevensegment_decode(uint8_t  num){
 	
 	// 7-segments Reversed TruthTable
 		int number[10][8] = {
@@ -231,5 +255,25 @@ void sevensegment_decode(uint8_t  num){
 		GPIO_write(GPIOB, 6, number[num][7]);  // DP
 		 
 		
+	}
+	
+void pause_sevensegment_decode(void){   //For display 'P'
+		
+	//Clear
+		GPIO_write(GPIOA, 8, HIGH);  // A
+		GPIO_write(GPIOB, 10,HIGH); // B
+		GPIO_write(GPIOA, 7, HIGH);  // C
+		GPIO_write(GPIOA, 6, HIGH);  // D
+		GPIO_write(GPIOB, 9, HIGH);  // E
+		GPIO_write(GPIOA, 9, HIGH);  // F
+		GPIO_write(GPIOC, 7, HIGH);  // G
+		GPIO_write(GPIOB, 6, HIGH);  // DP
+		
+	// Set P
+		GPIO_write(GPIOA, 8, LOW);  // A
+		GPIO_write(GPIOB, 10,LOW); // B
+		GPIO_write(GPIOB, 9, LOW);  // E
+		GPIO_write(GPIOA, 9, LOW);  // F
+		GPIO_write(GPIOC, 7, LOW);  // G
 	}
 			

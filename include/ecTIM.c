@@ -1,7 +1,9 @@
 /**
 ******************************************************************************
-* @author   DongMin Kim 21800064
-* @Mod     -
+* @author  SSSLAB
+* @Mod		 2022-10-30 by Dongmin Kim  	
+* @brief   Embedded Controller:  EC_HAL_for_student_exercise 
+* 
 ******************************************************************************
 */
 
@@ -11,7 +13,7 @@
 
 /* Timer Configuration */
 
-void TIM_init(TIM_TypeDef* timerx, uint32_t msec){ 
+void TIM_init(TIM_TypeDef* timerx, uint32_t unit, uint32_t time){ 
 	
 // 1. Enable Timer CLOCK
 	if(timerx ==TIM1) RCC->APB2ENR |= RCC_APB2ENR_TIM1EN;
@@ -24,7 +26,8 @@ void TIM_init(TIM_TypeDef* timerx, uint32_t msec){
 	
 	
 // 2. Set CNT period
-	TIM_period_ms(timerx,msec); 
+	if(unit == 0) TIM_period_ms(timerx,time); 
+	else if(unit == 1) TIM_period_us(timerx,time); 
 	
 	
 // 3. CNT Direction
@@ -55,7 +58,7 @@ void TIM_period_ms(TIM_TypeDef* TIMx, uint32_t msec){
 	
 	// 0.1ms(10kHz, ARR=1) to 6.5sec (ARR=0xFFFF)
 	uint32_t prescaler = 8400;
-	uint16_t ARRval=(84/(prescaler)*msec);  			// 84MHz/1000ms
+	uint16_t ARRval=(8400/(prescaler)*10*msec);  			// 84MHz/1000ms
 
 	TIMx->PSC = prescaler-1;					
 	TIMx->ARR = ARRval-1;							
@@ -63,11 +66,13 @@ void TIM_period_ms(TIM_TypeDef* TIMx, uint32_t msec){
 
 
 // Update Event Interrupt
-void TIM_INT_init(TIM_TypeDef* timerx, uint32_t msec){
+void TIM_INT_init(TIM_TypeDef* timerx, uint32_t unit, uint32_t time){
 // 1. Initialize Timer	
-	TIM_init(timerx,msec);
+	TIM_init(timerx,unit, time);
 	
 // 2. Enable Update Interrupt
+	TIM_INT_enable(timerx);
+	
 	uint32_t IRQn_reg =0;
 	if(timerx ==TIM1)       IRQn_reg = TIM1_UP_TIM10_IRQn;
 	else if(timerx ==TIM2)  IRQn_reg = TIM2_IRQn;
@@ -75,6 +80,7 @@ void TIM_INT_init(TIM_TypeDef* timerx, uint32_t msec){
 	else if(timerx ==TIM4) IRQn_reg = TIM4_IRQn;
 	else if(timerx ==TIM5) IRQn_reg = TIM5_IRQn;
 	else if(timerx ==TIM9) IRQn_reg = TIM1_BRK_TIM9_IRQn;
+	else if(timerx ==TIM10)  IRQn_reg = TIM1_UP_TIM10_IRQn;
 	else if(timerx ==TIM11) IRQn_reg = TIM1_TRG_COM_TIM11_IRQn;
 	
 	// repeat for TIM3, TIM4, TIM5, TIM9, TIM11

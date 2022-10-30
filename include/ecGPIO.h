@@ -2,7 +2,7 @@
 @ Embedded Controller by Young-Keun Kim - Handong Global University
 Author           : SSS LAB
 Created          : 05-03-2021
-Modified         : 10-10-2022 by DongMin Kim
+Modified         : 10-24-2022 by DongMin Kim
 Language/ver     : C++ in Keil uVision
 
 Description      : Distributed to Students for LAB_GPIO
@@ -66,6 +66,7 @@ Description      : Distributed to Students for LAB_GPIO
 void bit_toggle(GPIO_TypeDef* Port, int pin);
 void LED_toggle(void);
 void GPIO_init(GPIO_TypeDef *Port, int pin, int mode);
+void GPIO_output(GPIO_TypeDef *Port, int pin, int type, int pupd, int speed);
 void GPIO_write(GPIO_TypeDef *Port, int pin, int Output);
 int  GPIO_read(GPIO_TypeDef *Port, int pin);
 void GPIO_mode(GPIO_TypeDef* Port, int pin, int mode);
@@ -77,7 +78,7 @@ void multipleLED(uint32_t  num);
 void sevensegment_init(void); 
 void sevensegment_decode(uint8_t  num);
 void reverse_sevensegment_decode(uint8_t  num);
-
+void pause_sevensegment_decode(void);
  
 #ifdef __cplusplus
 }

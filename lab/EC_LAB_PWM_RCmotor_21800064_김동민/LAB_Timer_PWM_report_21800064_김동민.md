@@ -2,9 +2,9 @@
 
 **Date:** 2022-10-30
 
-**Author/Partner:** DongMin Kim / SeongJun Park
+**Author/Partner:** Dongmin Kim / Seongjun Park
 
-**Github:**  https://github.com/DongminKim21800064/EC_dmkim-064/blob/main/lab/EC_LAB_PWM_RCmotor_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC/EC_LAB_PWM_RCmotor_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC.md
+**Github:** https://github.com/DongminKim21800064/EC_dmkim-064
 
 **Demo Video:** https://www.youtube.com/watch?v=JqZM9r-GVFc
 
@@ -200,20 +200,18 @@ You need to observe how the PWM signal output is generated as input button is pu
    > In 16bit
    >
 ![image](https://user-images.githubusercontent.com/91419683/198887277-5e44c79b-4fa2-4196-8455-103b019044b8.png)
-
-
    >
    > In 32bit
-   >
+   >![image](https://user-images.githubusercontent.com/91419683/198887294-012a8aa3-1661-401a-91a5-35319d636745.png)
 
-   ![image](https://user-images.githubusercontent.com/91419683/198887294-012a8aa3-1661-401a-91a5-35319d636745.png)
+  
 
    
 
 
 ### Code
 
-Your code goes here: [ADD Code LINK such as github](https://github.com/ykkimhgu/EC-student/)
+Your code goes here: https://github.com/DongminKim21800064/EC_dmkim-064/tree/main/lab/EC_LAB_PWM_RCmotor_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC
 
 Explain your source code with necessary comments.
 
@@ -389,7 +387,7 @@ As you can see, the frequency of PWM observe 50.40Hz , and the duty cycle calcul
 
 ## Conclusion
 
- 	Through this experiment, I succeed to control the servo motor PWM output duty ratio. In order to control the desired angle, the pulse width was changed over time according to the given conditions to operate the motor. The timer interrupt gave a delay of 500 ms each step, and the EXTI interrupt allows the motor to be restarted with the button.
+​	Through this experiment, I succeed to control the servo motor PWM output duty ratio. In order to control the desired angle, the pulse width was changed over time according to the given conditions to operate the motor. The timer interrupt gave a delay of 500 ms each step, and the EXTI interrupt allows the motor to be restarted with the button.
 
 ## Reference
 
