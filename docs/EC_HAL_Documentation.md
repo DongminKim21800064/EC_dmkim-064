@@ -53,6 +53,26 @@ MCU:  STM32F411RE (Nucleo-64)
     + [delay_ms\(\)](#delay_ms)
     + [SysTick_reset\(\)](#systick_reset)
     + [SysTick_val\(\)](#systick_val)
+
+* [Timer interrupt](#Timer-interrupt)
+    + [Header File](#header-file)
+    + [TIM_init\(\)](#tim_init)
+    + [TIM_period_us\(\)](#tim_perod_us)
+    + [TIM_period_ms\(\)](#tim_perod_ms)
+    + [TIM_INT_init\(\)](#tim_int_init)
+    + [TIM_INT_enable\(\)](#tim_int_enable)
+    + [TIM_INT_disable\(\)](#tim_int_disable)
+    + [is_UIF\(\)](#is_uif)
+    + [clear_UIF\(\)](#clear_uif)
+
+* [PWM](#PWM)
+    + [Header File](#header-file)
+    + [PWM_init\(\)](#pwm_init)
+    + [PWM_period_ms\(\)](#pwm_period_ms)
+    + [PWM_period_us\(\)](#pwm_period_us)
+    + [PWM_pulsewidth_ms\(\)](#pwm_pulsewidth_ms)
+    + [PWM_duty\(\)](#pwm_duty)
+    + [PWM_pinmap\(\)](#pwm_pinmap)
 ---
 
 ## GPIO Digital InOut 
