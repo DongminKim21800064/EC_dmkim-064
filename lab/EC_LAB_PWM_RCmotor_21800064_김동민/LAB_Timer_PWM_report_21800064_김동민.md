@@ -8,7 +8,7 @@
 
 **Demo Video:** https://www.youtube.com/watch?v=JqZM9r-GVFc
 
-**PDF version:**
+**PDF version:** https://github.com/DongminKim21800064/EC_dmkim-064/blob/main/lab/EC_LAB_PWM_RCmotor_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC/LAB_Timer_PWM_report_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC.pdf
 
 # Introduction
 
