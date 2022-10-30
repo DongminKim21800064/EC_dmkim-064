@@ -728,3 +728,377 @@ uint32_t SysTick_val(void);
 SysTick_val(void); // return current reload value
 ```
 
+
+
+## Timer Interrupt
+
+### Header File
+
+ `#include "ecTIM.h"`
+
+```c
+#ifndef __EC_TIM_H 
+#define __EC_TIM_H
+#include "stm32f411xe.h"
+
+#ifdef __cplusplus
+ extern "C" {
+#endif /* __cplusplus */
+#define m_sec  0
+#define u_sec  1
+
+/* Timer Configuration */
+void TIM_init(TIM_TypeDef* timerx, uint32_t unit, uint32_t time);  
+void TIM_period_us(TIM_TypeDef* timx, uint32_t usec);  
+void TIM_period_ms(TIM_TypeDef* timx, uint32_t msec);
+
+void TIM_INT_init(TIM_TypeDef *timerx, uint32_t unit ,uint32_t time); 
+void TIM_INT_enable(TIM_TypeDef* timx);
+void TIM_INT_disable(TIM_TypeDef* timx);
+
+uint32_t is_UIF(TIM_TypeDef *TIMx);
+void clear_UIF(TIM_TypeDef *TIMx);
+
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif
+```
+
+### TIM_init()
+
+Initialize TIM CLOCK, CNT period, CNT Direction, Enable Timer Counter.
+
+```c
+void TIM_init(TIM_TypeDef* timerx, uint32_t unit, uint32_t time);
+```
+
+**Parameters**
+
+* **timerx :** Select TIM(x), x = 1,2, ..
+* **unit :** Select unit of the time. m_sec = 0, u_sec = 1
+* **time :** Declare timer period
+
+**Example code**
+
+```c
+TIM_INT_init(TIM3,u_sec,100);
+```
+
+
+
+### TIM_period_us()
+
+Initialize Timer period micro unit sec.
+
+```c
+TIM_period_us(TIM_TypeDef* timx, uint32_t usec);
+```
+
+**Parameters**
+
+* **timerx :** Select TIM(x), x = 1,2, ..
+* **usec :** Declare micro sec timer period
+
+**Example code**
+
+```c
+TIM_period_us(TIM3, 100);
+```
+
+
+
+### TIM_period_ms()
+
+Initialize Timer period milli unit sec.
+
+```c
+TIM_period_ms(TIM_TypeDef* timx, uint32_t msec);
+```
+
+**Parameters**
+
+* **timerx :** Select TIM(x), x = 1,2, ..
+* **msec :** Declare milli sec timer period
+
+**Example code**
+
+```c
+TIM_period_ms(TIM3, 1);
+```
+
+
+
+### TIM_INT_init()
+
+Initialize TIM interrupt.
+
+```c
+void TIM_INT_init(TIM_TypeDef* timerx, uint32_t unit, uint32_t time);
+```
+
+**Parameters**
+
+* **timerx :** Select TIM(x), x = 1,2, ..
+* **unit :** Select unit of the time. m_sec = 0, u_sec = 1
+* **time :** Declare timer period
+
+**Example code**
+
+```c
+TIM_INT_init(TIM3, u_sec, 100);
+```
+
+
+
+### TIM_INT_enable()
+
+Initialize TIM enable.
+
+```c
+void TIM_INT_enable(TIM_TypeDef* timx);
+```
+
+**Parameters**
+
+* **timerx :** Select TIM(x), x = 1,2, ..
+
+**Example code**
+
+```c
+TIM_INT_enable(TIM3);
+```
+
+
+
+### TIM_INT_disable()
+
+Initialize TIM disable.
+
+```c
+void TIM_INT_disable(TIM_TypeDef* timx);
+```
+
+**Parameters**
+
+* **timerx :** Select TIM(x), x = 1,2, ..
+
+**Example code**
+
+```c
+TIM_INT_disable(TIM3);
+```
+
+
+
+### is_UIF()
+
+update interrupt flag
+
+```c
+uint32_t is_UIF(TIM_TypeDef *TIMx);
+```
+
+**Parameters**
+
+* **timerx :** Select TIM(x), x = 1,2, ..
+
+**Example code**
+
+```c
+is_UIF(TIM3);
+```
+
+
+
+### clear_UIF()
+
+clear by writing 0
+
+```c
+void clear_UIF(TIM_TypeDef *TIMx);
+```
+
+**Parameters**
+
+* **timerx :** Select TIM(x), x = 1,2, ..
+
+**Example code**
+
+```c
+clear_UIF(TIM3);
+```
+
+
+
+## PWM
+
+### Header File
+
+ `#include "ecPWM.h"`
+
+```c
+#include "stm32f411xe.h"
+#include "ecGPIO.h"
+#include "ecTIM.h"  			// change to ecTIM.h
+
+#ifndef __EC_PWM_H
+#define __EC_PWM_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif /* __cplusplus */
+
+typedef struct{
+   GPIO_TypeDef *port;
+   int pin;
+   TIM_TypeDef *timer;
+   int ch;
+} PWM_t;
+
+
+/* PWM Configuration */
+void PWM_init(PWM_t *pwm, GPIO_TypeDef *port, int pin);  
+void PWM_period_ms(PWM_t *pwm,  uint32_t msec);		
+void PWM_period_us(PWM_t *pwm, uint32_t usec);  
+
+
+void PWM_pulsewidth_ms(PWM_t *pwm, float pulse_width_ms);
+void PWM_duty(PWM_t *pwm, float duty);
+void PWM_pinmap(PWM_t *PWM_pin);
+
+
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif
+```
+
+### PWM_init()
+
+Initialize PWM's GPIO port, configure GPIO AFR, initialize timer, configure timer output mode as PWM, enable timer counter.
+
+```c
+void PWM_init(PWM_t *pwm, GPIO_TypeDef *port, int pin);  
+```
+
+**Parameters**
+
+* **pwm** 
+* **port :** Port Number,  GPIOA~GPIOH
+* **pin :** pin number (int) 0~15
+
+**Example code**
+
+```c
+PWM_init(&pwm, GPIOA, RCMotor_PIN);
+```
+
+
+
+### PWM_period_ms()
+
+Initialize PWM period in milli sec unit.
+
+```c
+void PWM_period_ms(PWM_t *pwm,  uint32_t msec);	
+```
+
+**Parameters**
+
+* **pwm** 
+* **msec :** Declare milli sec timer period
+
+**Example code**
+
+```c
+PWM_period_ms(&pwm, pwm_period);
+```
+
+
+
+### PWM_period_us()
+
+Initialize PWM period in micro sec unit.
+
+```c
+void PWM_period_us(PWM_t *pwm,  uint32_t usec);	
+```
+
+**Parameters**
+
+* **pwm** 
+* **usec :** Declare micro sec timer period
+
+**Example code**
+
+```c
+PWM_period_us(&pwm, pwm_period);
+```
+
+
+
+### PWM_pulsewidth_ms()
+
+Initialize PWM pulse width in msec unit.
+
+```c
+void PWM_pulsewidth_ms(PWM_t *pwm, float pulse_width_ms);
+```
+
+**Parameters**
+
+* **pwm** 
+* **pulse_width_ms :** Declare msec PWM pulse width
+
+**Example code**
+
+```c
+PWM_pulsewidth_ms(&pwm, pulse_width_ms);
+```
+
+
+
+### PWM_duty()
+
+Initialize PWM duty ratio.
+
+```c
+void PWM_duty(PWM_t *pwm, float duty);
+```
+
+**Parameters**
+
+* **pwm** 
+* **duty :** Declare duty ratio of PWM
+
+**Example code**
+
+```c
+PWM_duty(&pwm, (0.5 + ((2.5-0.5)/18)*state)/pwm_period);
+```
+
+
+
+### PWM_pinmap()
+
+Initialize pinmap of PWM.
+
+```c
+void PWM_pinmap(PWM_t *PWM_pin);
+```
+
+**Parameters**
+
+* **pin :** pin number (int) 0~15
+
+**Example code**
+
+```c
+PWM_pinmap(PWM_pin);
+```
+
