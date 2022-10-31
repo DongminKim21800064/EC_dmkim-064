@@ -25,7 +25,7 @@ In this lab, you are required to create a simple program that control a servo mo
   - DC motor
 
 - Others
-  - Jump cable x3
+  - Jump cablex3
 
 #### Software
 
