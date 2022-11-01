@@ -54,10 +54,12 @@ Fill in the blanks of each output data depending on the below sequence.
 **Full-stepping sequence**
 
 ![img](https://user-images.githubusercontent.com/91526930/197428513-f9a23147-3448-4bed-bda2-c90325b8c143.png)
+![image](https://user-images.githubusercontent.com/91419683/199210301-5c73ff59-49e2-455d-9655-1b991acc6c63.png)
 
 **Half-stepping sequence**
 
 ![img](https://user-images.githubusercontent.com/91526930/197429006-d552ab16-0bbf-4c52-bdce-a0f2bfe5f0d8.png)
+![image](https://user-images.githubusercontent.com/91419683/199210347-66f6adcc-43a2-4050-af87-f41a91991b08.png)
 
 ### Finite State Machine
 
@@ -65,9 +67,11 @@ Draw a State Table for Full-Step Sequence. Use Moore FSM for this case. See *‘
 
 - Full-Stepping Sequence
 
-  
+  ![image](https://user-images.githubusercontent.com/91419683/199210419-95ff33f6-d831-4d38-937b-bbfa31f7a4f8.png)
+
 
 - Half-Stepping Sequence
+![image](https://user-images.githubusercontent.com/91419683/199210509-a0fd02e9-620c-49d6-aa05-4b7b0f343bc5.png)
 
   
 
