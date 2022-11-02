@@ -1,7 +1,7 @@
 /**
 ******************************************************************************
 * @author							DongMin Kim  
-* @Modified         : 10-27-2022 by DongMin Kim   	
+* @Modified         : 11-02-2022 by DongMin Kim   	
 * @brief	Embedded Controller:  Stepper Motor 
 *					 
 ******************************************************************************
@@ -42,7 +42,7 @@ typedef struct{
 
 	 
 void Stepper_init(GPIO_TypeDef* port1, int pin1, GPIO_TypeDef* port2, int pin2, GPIO_TypeDef* port3, int pin3, GPIO_TypeDef* port4, int pin4);
-void Stepper_setSpeed(long whatSpeed);
+void Stepper_setSpeed(long whatSpeed, int mode);
 void Stepper_step(int steps, int direction, int mode); 
 void Stepper_stop(void);
 

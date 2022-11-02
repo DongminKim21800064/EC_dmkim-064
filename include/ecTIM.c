@@ -43,25 +43,74 @@ void TIM_init(TIM_TypeDef* timerx, uint32_t unit, uint32_t time){
 void TIM_period_us(TIM_TypeDef *TIMx, uint32_t usec){   
 	// Period usec = 1 to 1000
 
-	// 1us(1MHz, ARR=1) to 65msec (ARR=0xFFFF)
-	uint32_t prescaler = 84;
-	uint16_t ARRval= (84/(prescaler)*usec);  // 84MHz/1000000 us
+	uint16_t PSCval;
+	uint32_t Sys_CLK;
 	
-	TIMx->PSC = prescaler-1;					
-	TIMx->ARR = ARRval-1;					
+	if((RCC->CFGR & RCC_CFGR_SW_PLL)== RCC_CFGR_SW_PLL)
+			Sys_CLK = 84000000;
+	
+	else if((RCC->CFGR & RCC_CFGR_SW_HSI)== RCC_CFGR_SW_HSI)
+			Sys_CLK = 16000000;
+	
+	if (TIMx == TIM2 || TIMx == TIM3){
+		uint32_t ARRval;
+		
+		PSCval = Sys_CLK/1000000;							// 84 or 16 --> f_cnt = 10kHz
+		ARRval = Sys_CLK/PSCval/1000000* usec;		// 10kHz*msec
+		TIMx->PSC = PSCval - 1;
+		TIMx->ARR = ARRval - 1;
+	}
+	else{
+		uint16_t ARRval;
+		
+		PSCval = Sys_CLK/1000000;							// 8400 or 1600 --> f_cnt = 10kHz
+		ARRval = Sys_CLK/PSCval/1000000*usec;		// 10kHz*msec
+		TIMx->PSC = PSCval - 1;
+		TIMx->ARR = ARRval - 1;		
+	}
+	// 1us(1MHz, ARR=1) to 65msec (ARR=0xFFFF)
+	//uint32_t prescaler = 84;
+	//uint16_t ARRval= (84/(prescaler)*usec);  // 84MHz/1000000 us
+	
+	//TIMx->PSC = prescaler-1;					
+	//TIMx->ARR = ARRval-1;					
 }
 
 
 
 void TIM_period_ms(TIM_TypeDef* TIMx, uint32_t msec){ 
-	// Period msec = 1 to 6000
 	
+	uint16_t PSCval;
+	uint32_t Sys_CLK;
+	
+	if((RCC->CFGR & RCC_CFGR_SW_PLL)== RCC_CFGR_SW_PLL)
+			Sys_CLK = 84000000;
+	
+	else if((RCC->CFGR & RCC_CFGR_SW_HSI)== RCC_CFGR_SW_HSI)
+			Sys_CLK = 16000000;
+	
+	if (TIMx == TIM2 || TIMx == TIM3){
+		uint32_t ARRval;
+		
+		PSCval = Sys_CLK/10000;								// 8400 or 1600 --> f_cnt = 10kHz
+		ARRval = Sys_CLK/PSCval/1000* msec;		// 10kHz*msec
+		TIMx->PSC = PSCval - 1;
+		TIMx->ARR = ARRval - 1;
+	}
+	else{
+		uint16_t ARRval;
+		
+		PSCval = Sys_CLK/10000;								// 8400 or 1600 --> f_cnt = 10kHz
+		ARRval = Sys_CLK/PSCval/1000*msec;		// 10kHz*msec
+		TIMx->PSC = PSCval - 1;
+		TIMx->ARR = ARRval - 1;		
+	}
 	// 0.1ms(10kHz, ARR=1) to 6.5sec (ARR=0xFFFF)
-	uint32_t prescaler = 8400;
-	uint16_t ARRval=(8400/(prescaler)*10*msec);  			// 84MHz/1000ms
+	//uint32_t prescaler = 8400;
+	//uint16_t ARRval=(8400/(prescaler)*10*msec);  			// 84MHz/1000ms
 
-	TIMx->PSC = prescaler-1;					
-	TIMx->ARR = ARRval-1;							
+	//TIMx->PSC = prescaler-1;					
+	//TIMx->ARR = ARRval-1;							
 }
 
 

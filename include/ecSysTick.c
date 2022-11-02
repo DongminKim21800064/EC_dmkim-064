@@ -13,6 +13,7 @@
 #define MCU_CLK_HSI 16000000
 
 volatile uint32_t msTicks;
+volatile uint32_t usTicks;
 
 //EC_SYSTEM_CLK
 
@@ -26,8 +27,8 @@ void SysTick_init(uint32_t msec){
 
 	// uint32_t MCU_CLK=EC_SYSTEM_CLK
 	// SysTick Reload Value Register
-	SysTick->LOAD = (MCU_CLK_PLL*msec / 1000) - 1;						// 1ms, for HSI PLL = 84MHz.
-
+	//SysTick->LOAD = (MCU_CLK_PLL*msec / 1000) - 1;						// 1ms, for HSI PLL = 84MHz.
+	SysTick->LOAD = (MCU_CLK_PLL*msec / 1000000) - 1;						// 1us, for HSI PLL = 84MHz.
 	// SysTick Current Value Register
 	SysTick->VAL = 0;
 
@@ -49,25 +50,29 @@ void SysTick_Handler(void){
 }
 
 void SysTick_counter(){
-	msTicks++;
+	//msTicks++;
+	usTicks++;
 }	
 
 
-void delay_ms (uint32_t mesc){
+void delay_ms (uint32_t msec){
   uint32_t curTicks;
 
   curTicks = msTicks;
-  while ((msTicks - curTicks) < mesc);
+  while ((msTicks - curTicks) < msec);
 	
 	msTicks = 0;
 }
 
-//void delay_ms(uint32_t msec){
-//	uint32_t now=SysTick_val(); 
-//	if (msec>5000) msec=5000;
-//	if (msec<1) msec=1;
-//	while ((now - SysTick_val()) < msec);
-//}
+void delay_us (uint32_t usec){
+  uint32_t curTicks;
+
+  curTicks = usTicks;
+  while ((usTicks - curTicks) < usec);
+	
+	usTicks = 0;
+}
+
 
 
 void SysTick_reset(void)
@@ -80,7 +85,4 @@ uint32_t SysTick_val(void) {
 	return SysTick->VAL;
 }
 
-//void SysTick_counter(){
-//	msTicks++;
-//	if(msTicks%1000 == 0) count++;
-//}	
+

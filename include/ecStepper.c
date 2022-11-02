@@ -1,7 +1,7 @@
 /**
 ******************************************************************************
 * @author							DongMin Kim  
-* @Modified         : 10-27-2022 by DongMin Kim   	
+* @Modified         : 11-02-2022 by DongMin Kim   	
 * @brief	Embedded Controller:  Stepper Motor 
 *					 
 ******************************************************************************
@@ -23,8 +23,8 @@
 
 // Stepper Motor function
 uint32_t direction = 1; 
-uint32_t step_delay = 100; 
-uint32_t step_per_rev = 64*32;
+uint32_t step_delay = 100 ; 
+uint32_t step_per_rev = 32*64;
 	 
 
 // Stepper Motor variable
@@ -110,10 +110,13 @@ void Stepper_pinOut (uint32_t state, int mode){
 }
 
 
-void Stepper_setSpeed (long whatSpeed){      // rppm
-		step_delay = 	60000/(step_per_rev*whatSpeed); // Convert rpm to milli sec
-		// 1rpm = 1rev / min
-		// 1rev = 2048 steps ; 2rev = 4096  steps ....
+void Stepper_setSpeed (long whatSpeed, int mode){      // rpm
+	if(mode == FULL)
+		step_delay = (uint32_t) (60000*1000)/(step_per_rev*whatSpeed);// Convert rpm to milli sec
+	else if(mode == HALF)
+		step_delay = (uint32_t) (60000*1000)/(step_per_rev*whatSpeed*2);
+	// 1rpm = 1rev / min
+		// 1rev = 2048 steps ; 2rev = 4096 steps ....
 		// 1 min = 60 sec = 60000 milli sec
 		
 }
@@ -121,16 +124,16 @@ void Stepper_setSpeed (long whatSpeed){      // rppm
 
 void Stepper_step(int steps, int direction, int mode){
 	 uint32_t state = 0;
-	 myStepper._step_num = steps;
+   myStepper._step_num = steps;
 
 	 for(; myStepper._step_num > 0; myStepper._step_num--){ // run for step size
-				delay_ms(step_delay);                             // delay (step_delay); 
+				delay_us(step_delay);                             // delay (step_delay); 
 					 
 		    if (mode == FULL) 		 												
 						state = FSM_full[state].next[direction];   // state = next state
 				else if (mode == HALF) 
 						state = FSM_half[state].next[direction];   // state = next state
-				
+
 				Stepper_pinOut(state, mode);
    }
 }

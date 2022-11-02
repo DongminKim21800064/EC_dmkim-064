@@ -1,6 +1,6 @@
 /*----------------------------------------------------------------\
 @ Embedded Controller by Young-Keun Kim - Handong Global University
-Author           : SSS Lab
+Author           : Dongmin Kim
 Created          : 05-03-2021
 Modified         : 10-10-2022 by DongMin Kim
 Language/ver     : C++ in Keil uVision
