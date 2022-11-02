@@ -166,11 +166,11 @@ image
 
    > **Rectangular **
    >
-   > ![img](https://blogfiles.pstatic.net/MjAyMjA5MjJfMzAw/MDAxNjYzODQ0NTMwMjY4.RJI5BUhFRhPsMgseVi6y9eX-5vYqU2jshipPJVS-adMg.hgtAabWv_kkDwJtATMB3IrgC5bRjMVyMqVGcAL5uFfgg.PNG.licky8131/20220921_222656.png)
+   > ![image](https://user-images.githubusercontent.com/91419683/199492759-4f1320cf-520d-40d2-8048-1671dd9316e8.png)
    >
    > **Trapezoid**
    >
-   > ![img](https://blogfiles.pstatic.net/MjAyMjA5MjJfODkg/MDAxNjYzODQ0NTIzNTM5.LxpCVm6jCEnUUcel5Ms_uvsUMvb8pAzWJ9Ma4rkreTQg.iLUlXfOhp6hHOOU-Gw-lGaJNBzhkqb9dvDTZ9tyRPSYg.PNG.licky8131/20220921_215444.png)
+   > ![image](https://user-images.githubusercontent.com/91419683/199492803-6bb7a339-1aa4-432d-9132-3e15277b2b1d.png)
    >
    >  If the output power of the motor suddenly changes from LOW to HIGH, overshoot is generated at the point where it becomes HIGH, as in the Rectangular waveform, resulting in vibration of the motor. 
    >
@@ -182,9 +182,9 @@ image
 
 2. How would you change the code more efficiently for micro-stepping control? You don’t have to code this but need to explain your strategy.
 
-   > ![image-20221102211050654](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221102211050654.png)
+   >![image](https://user-images.githubusercontent.com/91419683/199492838-15dcbfed-a830-4b05-8422-1842492dd6bd.png)
    >
-   > ![img](https://blogfiles.pstatic.net/MjAyMTA0MjdfMjkz/MDAxNjE5NTA5NzgxOTI0.fqf823kcR0wZROZE854OhSdNEganF8CQx6cB5Ll7wBUg.O72cIhRBTed8gEchg6xBdWX8CN8eFcF3w4xiIA4nyEEg.JPEG.jeonghyun_0/%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C_%EC%8A%A4%ED%85%8C%ED%95%91.jpg) 
+   > ![image](https://user-images.githubusercontent.com/91419683/199492869-6f244281-69c3-499b-8581-121024056214.png)
    >
    >  Micro-stepping, which is used as a way to control the operation of the step motor more precisely, is controlled by dividing the rotation angle corresponding to the pull-step into multiple sub-steps. When the full step angle is 90 degrees, it is decomposed into multiple steps such as 1/4, 1/8, 1/16, 1/32 to control the rotation at a more precise step angle.
    >
@@ -277,7 +277,7 @@ image
 
 Experiment images and results
 
-> ![image-20221102212038935](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\image-20221102212038935.png)
+> ![image](https://user-images.githubusercontent.com/91419683/199492942-45fc2053-6492-4661-bfa5-d233b06f3c08.png)
 
 Demo Video Link : https://youtu.be/L4a_5KlcQZk
 
