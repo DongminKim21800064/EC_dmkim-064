@@ -295,6 +295,10 @@ Given reference
 
 https://ykkim.gitbook.io/ec/course/lab/lab-stepper-motor
 
+Micro stepping
+
+https://blog.naver.com/jeonghyun_0/222325006827
+
 ## Troubleshooting
 
 **Delay mode issue**
