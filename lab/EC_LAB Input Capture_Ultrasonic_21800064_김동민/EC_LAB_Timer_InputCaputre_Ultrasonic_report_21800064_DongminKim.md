@@ -6,7 +6,7 @@
 
 **Github:**  https://github.com/DongminKim21800064/EC_dmkim-064
 
-**Demo Video:**  
+**Demo Video:**  https://www.youtube.com/watch?v=gZgYWWAU3Kk
 
 # Introduction
 
@@ -124,51 +124,139 @@ The program needs to
 |              | PWM period: 50msec pulse width: 10usec    | Counter Clock : 0.1MHz (10us) TI3 -> IC3 (rising edge) TI3 -> IC4 (falling edge) |
 
 ### Circuit Diagram
+![image](https://user-images.githubusercontent.com/91419683/200917742-a1f920ec-907d-4a59-bbfe-c3cc023d15dc.png)
 
-> You need to include the circuit diagram
+
 
 ### Discussion
 
 1. There can be an over-capture case, when a new capture interrupt occurs before reading the CCR value. When does it occur and how can you calculate the time span accurately between two captures?
 
-> Answer discussion questions
+> In order to handle the overcapture, it is recommended to read the data before the overcapture flag. This is to avoid missing an overcapture which could happen after reading the flag and before reading the data.
 
 2. In the tutorial, what is the accuracy when measuring the period of 1Hz square wave? Show your result.
 
-> Answer discussion questions
+> -
 
 ### Code
 
-Your code goes here: [ADD Code LINK such as github](https://github.com/ykkimhgu/EC-student/)
+Your code goes here:(https://github.com/DongminKim21800064/EC_dmkim-064/blob/main/lab/EC_LAB%20Input%20Capture_Ultrasonic_21800064_%EA%B9%80%EB%8F%99%EB%AF%BC/LAB_TImer_InputCapture_Ultrasonic.c)
 
 Explain your source code with necessary comments.
 
-// YOUR MAIN CODE ONLY
+**LAB_Timer_InputCapture_Ultrasonic.c**
 
-// YOUR CODE
+```c
+#include "stm32f411xe.h"
+#include "math.h"
+#include "ecGPIO.h"
+#include "ecRCC.h"
+#include "ecTIM.h"
+#include "ecPWM.h"
+#include "ecUART.h"
+#include "ecSystick.h"
 
+void TIM2_IRQHandler(void);
 
+uint32_t ovf_cnt = 0;
+double distance = 0;
+double timeInterval = 0;
+double time1 = 0;
+double time2= 0;
+static volatile int flag = 0;
 
-**Example Code**
+void setup(void);
 
-![img](https://user-images.githubusercontent.com/91526930/198865712-565ba10b-a82c-497f-919d-78dd88a25bf5.png)
+int main(void){
+	
+	setup();
+	
+	
+	while(1){
+	  
+	if(flag>=5){ 				// For ignore Initial sensor malfunction
+			distance = ( timeInterval*340/(2*1000000) ) * 100; // ( timeInterval[us]*340[m/s]/(2*1000000) ) * 100 ==> distance[cm]
+		if(distance>=(2-0.3) && distance<=(400+0.3)){ // Measurement : 2cm to 400cm, Ranging Accuracy : +-3mm
+			printf("%f [cm]\r\n", distance);
+			delay_ms(500);
+			flag = 5;
+			}
+		}
+	}
+}
+void TIM2_IRQHandler(void){
+	if(is_UIF(TIM2)){                   // Update interrupt
+		ovf_cnt++;												// overflow count
+		clear_UIF(TIM2);  						    // clear update interrupt flag
+	}
+	if(is_CCIF(TIM2, 3)){ 							// TIM2_Ch3 (IC3) Capture Flag. Rising Edge Detect
+		time1 = TIM2->CCR3;								// Capture TimeStart from CC3
+
+		clear_CCIF(TIM2, 3);              // clear capture/compare interrupt flag 
+	}								                      
+	else if(is_CCIF(TIM2, 4)){ 					// TIM2_Ch3 (IC4) Capture Flag. Falling Edge Detect
+		flag++;
+		time2 = TIM2->CCR4;								// Capture TimeEnd from CC4
+
+		timeInterval = ( (time2 - time1) + ( (TIM2->ARR) + 1 )*ovf_cnt ) * 10; 		// Total time of echo pulse
+		
+		ovf_cnt = 0;                      // overflow reset
+		clear_CCIF(TIM2, 4);							// clear capture/compare interrupt flag 
+	}
+}
+
+void setup(){
+
+	RCC_PLL_init(); 
+	SysTick_init(1);
+	UART2_init();
+  
+// PWM configuration ---------------------------------------------------------------------	
+	PWM_t trig;											// PWM1 for trig
+	
+	PWM_init(&trig,GPIOA,PA6);			 // PWM init as PA_6: Ultrasonic trig puls
+	PWM_period_us(&trig,50000);    	// PWM of 50ms period. Use period_us()
+	PWM_pulsewidth_us(&trig,10);   	// PWM pulse width of 10us
+
+// Input Capture configuration -----------------------------------------------------------------------	
+	IC_t echo;											// Input Capture for echo
+	ICAP_init(&echo,GPIOB,PB10);    // ICAP init as PB10 as input caputre
+	ICAP_counter_us(&echo, 10);   	// ICAP counter step time as 10us
+	ICAP_setup(&echo, 3, RISE);   	// TIM2_CH3 as IC3 , rising edge detect
+	ICAP_setup(&echo, 4, FALL);			// TIM2_CH3 as IC4 , falling edge detect
+
+// Enable TIMx interrupt			-----------------------------------------------------------------------	
+
+	TIM_INT_enable(TIM2);  					// TIM2 Interrupt Enable
+
+}
+
+```
+#### Code discription
+**main**
+If the IC4 Falling Edge detected more than five time, so that flag >= 5, "distance" equal like the code. Distance equal that ( timeInterval*sonic/(2*1000000) ) * 100. Second if statement in main function is for remove extraordinary numbers. The range specification of our sensor is 2cm ~ 400cm and +-3mm. So if distance is low than 1.7cm or 400.3cm, it will be extraordinary numbers.
+
+**TIM2_IRQHandler**
+Update intterupt in TIM2, and count the overflow. Measure the start time and final time for calculate the timeInterval.
+
+**setup**
+Regarding to the Lab description, I set up.
 
 ### Results
 
 Experiment images and results
+![IMG_8897 1](https://user-images.githubusercontent.com/91419683/200922078-6dc30965-02ea-4c87-86f2-454d4750837b.JPG)
 
-> Show experiment images /results
 
-Add [demo video link](https://github.com/ykkimhgu/course-doc/blob/master/course/lab/link/README.md)
+demo video link : https://www.youtube.com/watch?v=gZgYWWAU3Kk
 
 ## Reference
 
-Complete list of all references used (github, blog, paper, etc)
-
-
+Given Data : https://ykkim.gitbook.io/ec/course/lab/lab-input-capture-ultrasonic
 
 
 
 ## Troubleshooting
-
-(Option) You can write Troubleshooting section
+Two problems occurred while proceeding with Problem2. The first is that there were many errors in the initial measurement value immediately after reset. The second was that a very large distance was measured during the measurement process. 
+First, to solve the first problem, I reduced the initial value error by using 'flag' to output the distance value from the total occurrence of interrupt more than 5 times. In order to solve the second problem, the output was only made when the measurement value was within (2cm-3mm) to (400cm+3mm). It was based on the specification of the ultrasonic sensor.
+![image](https://user-images.githubusercontent.com/91419683/200925357-1e91ff95-72be-4cd3-9cd4-5411183630a2.png)
