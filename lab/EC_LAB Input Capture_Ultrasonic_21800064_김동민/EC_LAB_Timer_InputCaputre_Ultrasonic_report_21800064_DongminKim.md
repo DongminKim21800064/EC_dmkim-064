@@ -1,6 +1,6 @@
-# LAB: Stepper Motor 
+# LAB: Input Capture - Ultrasonic 
 
-**Date:** 2022-11-09
+**Date:** 2022-11-10
 
 **Author/Partner:** DongMin Kim / Jinho Guk
 
@@ -34,7 +34,7 @@ In this lab, you are required to create a simple program that uses input capture
 
 
 
-# Problem 1: Stepper Motor
+# Problem 1: Create HAL library
 
 ### Create HAL library
 
