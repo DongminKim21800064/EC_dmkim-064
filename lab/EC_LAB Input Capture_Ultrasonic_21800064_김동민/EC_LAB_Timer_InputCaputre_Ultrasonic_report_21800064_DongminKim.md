@@ -136,7 +136,9 @@ The program needs to
 
 2. In the tutorial, what is the accuracy when measuring the period of 1Hz square wave? Show your result.
 
-> -
+> ![ㅁㄴㅇㄿ](https://user-images.githubusercontent.com/91419683/200930145-1d97ff7d-ec06-49d5-8d03-5907f2741fb4.jpg)
+> The accuracy is almostly 100%, and the period of 1Hz wave is 2ms.
+
 
 ### Code
 
