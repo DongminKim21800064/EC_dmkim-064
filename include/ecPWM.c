@@ -1,8 +1,8 @@
 /**
 ******************************************************************************
-* @author  SSSLAB
-* @Mod		 2022-11-09 by Dongmin Kim  	
-* @brief   Embedded Controller:  EC_HAL
+* @author  Dongmin Kim
+* @Mod		 2022-10-30 by Dongmin Kim  	
+* @brief   Embedded Controller
 * 
 ******************************************************************************
 */
@@ -124,31 +124,6 @@ void PWM_pulsewidth_ms(PWM_t *pwm, float pulse_width_ms){
 		default: break;
 	}
 }
-
-
-void PWM_pulsewidth_us(PWM_t *pwm, float pulse_width_us){ 
-	int CHn = pwm->ch;
-	uint32_t fsys = 0;
-	uint32_t psc = pwm->timer->PSC;
-	
-	// Check System CLK: PLL or HSI
-	if((RCC->CFGR & (3<<0)) == 2)      { fsys = 84; }  // for usec 84MHz/1000000
-	else if((RCC->CFGR & (3<<0)) == 0) { fsys = 16; }
-	
-	//YOUR CODE GOES HERE
-	float fclk = fsys/(psc+1);					// fclk=fsys/(psc+1);
-	uint32_t ccval = pulse_width_us *fclk - 1;					// pulse_width_ms *fclk - 1;
-	
-	//YOUR CODE GOES HERE
-	switch(CHn){
-		case 1: pwm->timer->CCR1 = ccval; break;
-		case 2: pwm->timer->CCR2 = ccval; break;
-		case 3: pwm->timer->CCR3 = ccval; break;
-		case 4: pwm->timer->CCR4 = ccval; break;
-		default: break;
-	}
-}
-
 
 
 void PWM_duty(PWM_t *pwm, float duty) {                 //  duty=0 to 1	

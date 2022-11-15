@@ -1,11 +1,13 @@
-/**
-******************************************************************************
-* @author  SSSLAB
-* @Mod		 2022-11-09 by Dongmin Kim  	
-* @brief   Embedded Controller:  EC_HAL
-* 
-******************************************************************************
-*/
+/*----------------------------------------------------------------\
+@ Embedded Controller by Young-Keun Kim - Handong Global University
+Author           : SSS Lab
+Created          : 05-03-2021
+Modified         : 10-24-2022 by DongMin Kim
+Language/ver     : C++ in Keil uVision
+
+Description      : Distributed to Students for LAB_GPIO
+/----------------------------------------------------------------*/
+
 
 
 #include "stm32f4xx.h"
