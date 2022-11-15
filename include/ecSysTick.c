@@ -1,7 +1,9 @@
 /**
 ******************************************************************************
-* @author   DongMin Kim 21800064
-* @Mod     -
+* @author  SSSLAB
+* @Mod		 2022-11-09 by Dongmin Kim  	
+* @brief   Embedded Controller:  EC_HAL 
+* 
 ******************************************************************************
 */
 
@@ -27,8 +29,8 @@ void SysTick_init(uint32_t msec){
 
 	// uint32_t MCU_CLK=EC_SYSTEM_CLK
 	// SysTick Reload Value Register
-	//SysTick->LOAD = (MCU_CLK_PLL*msec / 1000) - 1;						// 1ms, for HSI PLL = 84MHz.
-	SysTick->LOAD = (MCU_CLK_PLL*msec / 1000000) - 1;						// 1us, for HSI PLL = 84MHz.
+	SysTick->LOAD = (MCU_CLK_PLL*msec / 1000) - 1;						// 1ms, for HSI PLL = 84MHz.
+	//SysTick->LOAD = (MCU_CLK_PLL*msec / 1000000) - 1;						// 1us, for HSI PLL = 84MHz.
 	// SysTick Current Value Register
 	SysTick->VAL = 0;
 
@@ -50,8 +52,8 @@ void SysTick_Handler(void){
 }
 
 void SysTick_counter(){
-	//msTicks++;
-	usTicks++;
+	msTicks++;
+	//usTicks++;
 }	
 
 

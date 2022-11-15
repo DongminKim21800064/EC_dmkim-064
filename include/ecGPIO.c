@@ -1,13 +1,11 @@
-/*----------------------------------------------------------------\
-@ Embedded Controller by Young-Keun Kim - Handong Global University
-Author           : SSS Lab
-Created          : 05-03-2021
-Modified         : 10-24-2022 by DongMin Kim
-Language/ver     : C++ in Keil uVision
-
-Description      : Distributed to Students for LAB_GPIO
-/----------------------------------------------------------------*/
-
+/**
+******************************************************************************
+* @author  SSSLAB
+* @Mod		 2022-11-09 by Dongmin Kim  	
+* @brief   Embedded Controller:  EC_HAL
+* 
+******************************************************************************
+*/
 
 
 #include "stm32f4xx.h"
@@ -89,67 +87,33 @@ void GPIO_write(GPIO_TypeDef *Port, int pin, int Output){
 
 
 void multipleLED_init(void){
-	RCC_HSI_init();	
+	
 	//SysTick_init();
+		
 	
-	
-	GPIO_init(GPIOA, 0, OUTPUT);    // calls RCC_GPIOA_enable()
-	GPIO_init(GPIOA, 1, OUTPUT);
-	GPIO_init(GPIOB, 0, OUTPUT);
-	GPIO_init(GPIOC, 1, OUTPUT);
-
-
-
-	// Digital out -------------------------------------------------------------
-	GPIO_pupd(GPIOA, 0, NONE);
-	GPIO_otype(GPIOA, 0, PUSH_PULL);
-	GPIO_ospeed(GPIOA, 0, MEDIUM_SPEED);
-
-	GPIO_pupd(GPIOA, 1, NONE);
-	GPIO_otype(GPIOA, 1, PUSH_PULL);
-	GPIO_ospeed(GPIOA, 1, MEDIUM_SPEED);
-
-	GPIO_pupd(GPIOB, 0, NONE);
-	GPIO_otype(GPIOB, 0, PUSH_PULL);
-	GPIO_ospeed(GPIOB, 0, MEDIUM_SPEED);
-
-	GPIO_pupd(GPIOC, 1, NONE);
-	GPIO_otype(GPIOC, 1, PUSH_PULL);
-	GPIO_ospeed(GPIOC, 1, MEDIUM_SPEED);
 
 }
 
 
 void multipleLED(uint32_t  num){   // Displaying 4xLEDs 0000 ~ 1111
 	int count = 0;
-	int number[16][4] = {
-		{0,0,0,0}, 
-		{0,0,0,1}, 
-		{0,0,1,0}, 
-		{0,0,1,1}, 
-		{0,1,0,0},
-		{0,1,0,1},
-		{0,1,1,0},
-		{0,1,1,1},
-		{1,0,0,0},
-		{1,0,0,1},
-		{1,0,1,0},
-		{1,0,1,1},
-		{1,1,0,0},
-		{1,1,0,1},
-		{1,1,1,0},
-		{1,1,1,1}, 
+	int number[8][3] = {
+		{0,0,0}, 
+		{0,0,1}, 
+		{0,1,0}, 
+		{0,1,1}, 
+		{1,0,0},
+		{1,0,1},
+		{1,1,0},
+		{1,1,1},
 			};
 		GPIO_write(GPIOA, 0, number[num][0]);
 		GPIO_write(GPIOA, 1, number[num][1]);
-		GPIO_write(GPIOB, 0, number[num][2]);
-		GPIO_write(GPIOC, 1, number[num][3]);
-		
+		GPIO_write(GPIOB, 0, number[num][2]);		
 		count++;
 		if (count >10) count =0;
-		//SysTick_reset();
-}
 
+}
 
 
 
@@ -164,38 +128,18 @@ void sevensegment_init(void){
 	GPIO_init(GPIOC, 7, OUTPUT);		// G
 	GPIO_init(GPIOB, 6, OUTPUT);		// DP
 	
-	//Set BUTTON_PIN to PULL-UP Mode
-	GPIO_pupd(GPIOC, BUTTON_PIN, EC_PU); 			// PULL-UP  
-	
-	//Set 7segment_PIN to NO PULL-UP, PULL-DOWN Mode
-	GPIO_pupd(GPIOB, 9, NONE); // no pull-up, pull-down
-	GPIO_pupd(GPIOA, 6, NONE);
-	GPIO_pupd(GPIOA, 7, NONE);
-	GPIO_pupd(GPIOA, 8, NONE);
-	GPIO_pupd(GPIOA, 9, NONE);
-	GPIO_pupd(GPIOB, 6, NONE);
-	GPIO_pupd(GPIOB,10, NONE);
-	GPIO_pupd(GPIOC, 7, NONE);
-	
-	//Set 7segment_PIN to Push-Pull Mode
-	GPIO_otype(GPIOB, 9, PUSH_PULL); //push-pull
-	GPIO_otype(GPIOA, 6, PUSH_PULL);
-	GPIO_otype(GPIOA, 7, PUSH_PULL);
-	GPIO_otype(GPIOA, 8, PUSH_PULL);
-	GPIO_otype(GPIOA, 9, PUSH_PULL);
-	GPIO_otype(GPIOB, 6, PUSH_PULL);
-	GPIO_otype(GPIOB,10, PUSH_PULL);
-	GPIO_otype(GPIOC, 7, PUSH_PULL);
-	
-	//Set 7segment_PIN to mid speed Mode
-	GPIO_ospeed(GPIOB, 9, MEDIUM_SPEED ); //mid-speed
-  GPIO_ospeed(GPIOA, 6, MEDIUM_SPEED );
-	GPIO_ospeed(GPIOA, 7, MEDIUM_SPEED );
-	GPIO_ospeed(GPIOA, 8, MEDIUM_SPEED );
-	GPIO_ospeed(GPIOA, 9, MEDIUM_SPEED );
-	GPIO_ospeed(GPIOB, 6, MEDIUM_SPEED );
-	GPIO_ospeed(GPIOB,10, MEDIUM_SPEED );
-	GPIO_ospeed(GPIOC, 7, MEDIUM_SPEED );
+
+		//Set 7segment_PIN Push-Pull, No Pull-up/Pull-down, Medium Speed
+
+	GPIO_output(GPIOA, 8, NONE, PUSH_PULL, MEDIUM_SPEED);		// A
+	GPIO_output(GPIOB, 10,NONE, PUSH_PULL, MEDIUM_SPEED);		// B	
+	GPIO_output(GPIOA, 7, NONE, PUSH_PULL, MEDIUM_SPEED);		// C
+	GPIO_output(GPIOA, 6, NONE, PUSH_PULL, MEDIUM_SPEED);		// D
+	GPIO_output(GPIOB, 9, NONE, PUSH_PULL, MEDIUM_SPEED);		// E
+	GPIO_output(GPIOA, 9, NONE, PUSH_PULL, MEDIUM_SPEED);		// F
+	GPIO_output(GPIOC, 7, NONE, PUSH_PULL, MEDIUM_SPEED);		// G
+	GPIO_output(GPIOB, 6, NONE, PUSH_PULL, MEDIUM_SPEED);		// DP
+		
 }
 
 void sevensegment_decode(uint8_t  num){

@@ -1,8 +1,8 @@
 /**
 ******************************************************************************
 * @author  SSSLAB
-* @Mod		 2022-10-30 by Dongmin Kim  	
-* @brief   Embedded Controller:  EC_HAL_for_student_exercise 
+* @Mod		 2022-11-08 by Dongmin Kim  	
+* @brief   Embedded Controller:  EC_HAL
 * 
 ******************************************************************************
 */
@@ -30,8 +30,45 @@ uint32_t is_UIF(TIM_TypeDef *TIMx);
 void clear_UIF(TIM_TypeDef *TIMx);
 
 
+
+/* Input Capture*/
+
+// Edge Type
+#define RISE 0
+#define FALL 1
+#define BOTH 2
+
+//Input Capture
+
+typedef struct{
+	GPIO_TypeDef *port;
+	int pin;   
+	TIM_TypeDef *timer;
+	int ch;  		//int Timer Channel
+	int ICnum;  //int IC number
+} IC_t;
+
+
+
+void ICAP_init(IC_t *ICx, GPIO_TypeDef *port, int pin);
+void ICAP_setup(IC_t *ICx, int IC_number, int edge_type);
+void ICAP_counter_us(IC_t *ICx, int usec);
+
+void ICAP_pinmap(IC_t *timer_pin);
+
+uint32_t is_pending_TIM(TIM_TypeDef *TIMx);
+void clear_pending_TIM(TIM_TypeDef *TIMx);
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
 #endif
+
+
+
+
+
+
+
