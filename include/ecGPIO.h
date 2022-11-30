@@ -61,8 +61,15 @@
  extern "C" {
 #endif /* __cplusplus */
 
+typedef struct{
+	GPIO_TypeDef *port;
+	int Pin;
+} _Pin;
+
+
 void bit_toggle(GPIO_TypeDef* Port, int pin);
 void LED_toggle(void);
+void LED_init(void);
 void GPIO_init(GPIO_TypeDef *Port, int pin, int mode);
 void GPIO_output(GPIO_TypeDef *Port, int pin, int type, int pupd, int speed);
 void GPIO_write(GPIO_TypeDef *Port, int pin, int Output);

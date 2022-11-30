@@ -21,6 +21,12 @@ void LED_toggle(void){
 	GPIOA->ODR ^= 1<< LED_PIN;
 }
 
+void LED_init(void){     
+	RCC_GPIOA_enable();
+	GPIO_mode(GPIOA, PA5, OUTPUT);
+
+}
+
 void GPIO_init(GPIO_TypeDef *Port, int pin, int mode){     
 	// mode  : Input(0), Output(1), AlterFunc(2), Analog(3)   
 	if (Port == GPIOA)

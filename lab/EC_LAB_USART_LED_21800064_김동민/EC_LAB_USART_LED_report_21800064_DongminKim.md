@@ -191,21 +191,13 @@ image
 
    Run 2 DC motors(Left-wheel, Right-wheel) to steer.
 
-   - 
+   - Turn Left: MotorA / MotorB = (50 / 80%) duty
 
-     Turn Left: MotorA / MotorB = (50 / 80%) duty
+   - Turn Right: MotorA / MotorB = (80 / 50%) duty
 
-   - 
+   - Go straight: MotorA / MotorB = (80 / 80 %) duty
 
-     Turn Right: MotorA / MotorB = (80 / 50%) duty
-
-   - 
-
-     Go straight: MotorA / MotorB = (80 / 80 %) duty
-
-   - 
-
-     STOP: MotorA / MotorB = (0 / 0 %) duty
+   - STOP: MotorA / MotorB = (0 / 0 %) duty
 
    You may use the key inputs as your preference for Left, Right, Straight.
 
