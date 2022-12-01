@@ -432,6 +432,16 @@ void TIM4_IRQHandler(void){
  
 ```
 
+**code discription**
+
+**main function**
+
+Find the distance using timeInterval in the while statement. Stop the DC motor when the distance measured by the UltraSensor is less than 10 cm. In normal times, adjust the PWM value to advance at a slow speed. When the IR sensor detects a color change, it adjusts the PWM value of the left and right DC motors to rotate.
+
+**setup**
+
+Perform basic initialization. ADC settings, PWM configuration, Input Capture configuration, and PWM initialization.
+
 ### Results
 
 Experiment images and results
