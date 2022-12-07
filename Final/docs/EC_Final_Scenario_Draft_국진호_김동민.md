@@ -19,7 +19,7 @@ Embedded Controller Lab Report
 
 | Scenario |                           Contents                           | Confirmation |
 | :------: | :----------------------------------------------------------: | :----------: |
-|    1     | The forklift  runs along the line designated as "Line Tracking Mode". |              |
+|    1     | The forklift  runs along the line designated as "Line Tracing Mode". |              |
 |    2     |   The forklift  senses the worker while driving and stops.   |              |
 |    3     |   The alarm goes  on so that workers can alert the danger.   |              |
 |    4     | The worker loads the stopped forklift. The pressure sensor on the lift detects this and  raises the lift. |              |
