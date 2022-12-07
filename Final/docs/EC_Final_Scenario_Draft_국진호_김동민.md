@@ -8,7 +8,7 @@ Embedded Controller Lab Report
 
 **Author/Partner:** Dongmin Kim / Jinho Kook
 
-
+**Github:** https://github.com/DongminKim21800064/EC_dmkim-064/blob/main/Final/docs/EC_Final_Scenario_Draft_%EA%B5%AD%EC%A7%84%ED%98%B8_%EA%B9%80%EB%8F%99%EB%AF%BC.md
 
 ![image](https://user-images.githubusercontent.com/91419683/206231821-090e539b-e625-4fea-9966-71463d0ef9ee.png)
 
