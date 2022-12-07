@@ -10,7 +10,8 @@ Embedded Controller Lab Report
 
 
 
-![image-20221208010650410](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221208010650410.png)
+![image](https://user-images.githubusercontent.com/91419683/206231821-090e539b-e625-4fea-9966-71463d0ef9ee.png)
+
 
 
 
@@ -38,7 +39,8 @@ Embedded Controller Lab Report
 
 **1.1 Auto Mode (Push the 'Q' on the PC)**
 
-![image-20221208005031504](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221208005031504.png)
+![image](https://user-images.githubusercontent.com/91419683/206232289-7500d66a-7447-4a0b-8edc-052a28fca3ab.png)
+
 
 **1.2 Manual Mode (Push the 'E' on the PC)**
 
@@ -60,7 +62,8 @@ Embedded Controller Lab Report
 
 #### 2. Cooler Fan & Caution Alarm
 
-![image-20221208005319283](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221208005319283.png)
+![image](https://user-images.githubusercontent.com/91419683/206232445-1f2994ea-1080-49b8-a85c-7158ca23e9a8.png)
+
 
 
 
@@ -68,16 +71,16 @@ Embedded Controller Lab Report
 
 ### Total Flow chart
 
-![image-20221208010947029](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221208010947029.png)
+![image](https://user-images.githubusercontent.com/91419683/206232533-eeb52a16-c2b5-469d-b677-5f9f83914df6.png)
 
 
 
 ### Cooler & Alarm 
 
-![image-20221208010838681](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221208010838681.png)
+![image](https://user-images.githubusercontent.com/91419683/206232619-262e7b8b-2ac8-4405-b76d-85137ba257b9.png)
 
 
 
 ### Fork Lift
 
-![image-20221208010819590](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221208010819590.png)
+![image](https://user-images.githubusercontent.com/91419683/206232677-60f9a076-fd49-4fe9-be61-e5d581351e60.png)
