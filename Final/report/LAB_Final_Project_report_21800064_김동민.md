@@ -28,7 +28,7 @@ Design an embedded system to realize a simple smart factory safety system with t
 
 **Overview of the Problem**
 
-![image-20221216235419169](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221216235419169.png)
+![image](https://user-images.githubusercontent.com/91419683/208179966-d36ca702-f777-4649-ab5a-d1a148eda129.png)
 
 **Description**
 
@@ -72,7 +72,7 @@ Design an embedded system to realize a simple smart factory safety system with t
 
 #### Hardware
 
-![image-20221217023042270](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221217023042270.png)
+![image](https://user-images.githubusercontent.com/91419683/208180008-165d7339-044a-45f4-80d7-fe0b1eb363fc.png)
 
 > In the case of Piezo sensor is originally analog, but we tune it to digitally by software .
 
@@ -87,25 +87,25 @@ Design an embedded system to realize a simple smart factory safety system with t
 
 # II. Problem Description
 
-![image-20221217035120517](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221217035120517.png)
+![image](https://user-images.githubusercontent.com/91419683/208180039-3ec50962-2a29-4506-861e-3f8a723c2022.png)
 
 ### A. MCU Detail
 
 - #### MCU1
 
-![image-20221217033005512](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221217033005512.png)
+![image](https://user-images.githubusercontent.com/91419683/208180061-97034f32-8a7d-462c-8b81-a19d6eb69de7.png)
 
 
 
 - #### MCU2
 
-  ![image-20221217033047262](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221217033047262.png)
+![image](https://user-images.githubusercontent.com/91419683/208180087-7416597a-cc77-40e8-ab37-274d5194c58f.png)
 
   
 
 - #### MCU3
 
-![image-20221217033115586](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221217033115586.png)
+![image](https://user-images.githubusercontent.com/91419683/208180104-a2341632-fc75-484e-99e1-aee2570e8d48.png)
 
 
 
@@ -113,15 +113,15 @@ Design an embedded system to realize a simple smart factory safety system with t
 
 - #### MCU1 
 
-![image-20221217041904909](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221217041904909.png)
+![image](https://user-images.githubusercontent.com/91419683/208180127-0d3e38ba-becc-4431-bee5-abead9a8a8fb.png)
 
 - #### MCU2
 
-  ![image-20221217041954153](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221217041954153.png)
+![image](https://user-images.githubusercontent.com/91419683/208180141-26681971-2532-4f79-b37e-ecfe0ed07af2.png)
 
 - #### MCU3
 
-  ![image-20221217042004472](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221217042004472.png)
+![image](https://user-images.githubusercontent.com/91419683/208180167-35f69387-af15-49b0-a97f-ade526d43de3.png)
 
 
 
@@ -129,11 +129,10 @@ Design an embedded system to realize a simple smart factory safety system with t
 
 #### C.1 Forklift Part (MCU1, MCU2)
 
-![image-20221217043229801](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221217043229801.png)
+![image](https://user-images.githubusercontent.com/91419683/208180209-55e4e892-0148-4a36-bfa6-791819ddd770.png)
 
 #### C.2 CoolerFan and Alarm(MCU3, Arduino uno)
-
-![image-20221217044237767](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221217044237767.png)
+![image](https://user-images.githubusercontent.com/91419683/208180231-eafd63df-59be-4fce-9b30-0f9f06e52c22.png)
 
 
 
@@ -147,7 +146,7 @@ Design an embedded system to realize a simple smart factory safety system with t
 
 **1.1 Auto Mode (Push the 'Q' on the PC)**
 
-![image](https://user-images.githubusercontent.com/91419683/206232289-7500d66a-7447-4a0b-8edc-052a28fca3ab.png)
+![image](https://user-images.githubusercontent.com/91419683/208180341-44ec8e2a-6ef3-4b61-84e4-436b0c9140d0.png)
 
 -  Input : IR sensing Data, Ultra Sonic sensing Data, Piezo sensing Data
 - Output : Liftup_flag, Liftdown_flag, Motor_flag, Buzzer_flag
@@ -172,7 +171,7 @@ Design an embedded system to realize a simple smart factory safety system with t
 
 #### 2. Cooler Fan & Caution Alarm
 
-![image](https://user-images.githubusercontent.com/91419683/206232445-1f2994ea-1080-49b8-a85c-7158ca23e9a8.png)
+![image](https://user-images.githubusercontent.com/91419683/208180417-533cc150-89fe-460e-a196-8a39562a089d.png)
 
 -  Input : Temerature sensing Data, Ultra Sonic sensing Data
 - Output : Motor_flag, Alarm_flag
@@ -218,7 +217,7 @@ Design an embedded system to realize a simple smart factory safety system with t
 
 **Demo video Link :** https://www.youtube.com/watch?v=e--00xkY3is  
 
-![image-20221217045528193](C:\Users\82106\AppData\Roaming\Typora\typora-user-images\image-20221217045528193.png)
+![image](https://user-images.githubusercontent.com/91419683/208180655-d73f38d0-1efe-4920-b48a-f2143c9bfd24.png)
 
 
 
