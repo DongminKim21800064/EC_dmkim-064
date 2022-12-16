@@ -10,7 +10,7 @@ Embedded Controller Lab Report
 
 **Author/Partner:** **Dongmin Kim / Jinho Kook**
 
-**Github:** 
+**Github:** https://github.com/DongminKim21800064/EC_dmkim-064/tree/main/Final
 
 **Demo Video:** **https://www.youtube.com/watch?v=e--00xkY3is**
 
@@ -222,6 +222,8 @@ Design an embedded system to realize a simple smart factory safety system with t
 
 
 # V. Appendix
+
+Github ; https://github.com/DongminKim21800064/EC_dmkim-064/tree/main/Final
 
 #### Main_1.c (Forklift main)
 
