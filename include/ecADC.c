@@ -42,8 +42,8 @@ void ADC_init(GPIO_TypeDef *port, int pin, int trigmode){  //mode 0 : SW, 1 : TR
 		ADC1->SMPR2 |=  4U << CHn*3;					// sampling time conversion : 84  			
 	}
 	else{
-		ADC1->SMPR1 &= ~(7U << (CHn%10)*3);
-		ADC1->SMPR1 |= 4U << (CHn%10)*3;
+		ADC1->SMPR1 &= 7UL << (3* (CHn - 10));
+		ADC1->SMPR1 |= 4U << (3* (CHn - 10));
 	}
 	
 // 2. Regular / Injection Group 
@@ -90,8 +90,8 @@ void ADC_TRGO(TIM_TypeDef* TIMx, int msec, int edge){
 	else if(TIMx == TIM3) timer=3;	
 	
 	// Single conversion mode (disable continuous conversion)
-	ADC1->CR2 &= ~ADC_CR2_ADON;     			// Discontinuous conversion mode
-	ADC1->CR2 |= ADC_CR2_EOCS;  					// Enable EOCS
+	ADC1->CR2 &=  ~(1UL << 1);     			// Discontinuous conversion mode
+	ADC1->CR2 |= 1UL << 10;  					// Enable EOCS
 	
 
 // HW Trigger configuration -------------------------------------------------------------
@@ -135,7 +135,7 @@ void ADC_TRGO(TIM_TypeDef* TIMx, int msec, int edge){
 void ADC_continue(int contmode){
 	if(contmode == CONT){
 		// Repetition: Continuous conversion
-		ADC1->CR2 |= ADC_CR2_CONT;       			// Enable Continuous conversion mode	
+		ADC1->CR2 |= ~ADC_CR2_EXTSEL;       			// Enable Continuous conversion mode	
 		ADC1->CR1 &= ~ADC_CR1_SCAN;					// 0: Scan mode disable 
 	}
 	else { 																//if(contmode==SINGLE)
@@ -173,19 +173,19 @@ void ADC_start(void){
 }
 
 uint32_t is_ADC_EOC(void){
-	return (ADC1->SR & 1<<1);
+	return (ADC1->SR & ADC_SR_EOC) == ADC_SR_EOC;
 }
 
 uint32_t is_ADC_OVR(void){
-	return ((ADC1->SR & ADC_SR_OVR) == ADC_SR_OVR);
+	return (ADC1->SR & ADC_SR_OVR) == ADC_SR_OVR;
 }
 
 void clear_ADC_OVR(void){
-	ADC1->SR &= ~ADC_SR_OVR;
+	ADC1->SR &= ~(1UL << 5);
 }
 
 uint32_t ADC_read(){
-	return ADC1->DR;
+	return (ADC1->DR);
 }
 
 uint32_t ADC_pinmap(GPIO_TypeDef *Port, int Pin){

@@ -149,3 +149,12 @@ void Stepper_stop (void){
 			GPIO_write(myStepper.port4, myStepper.pin4,0);
 }
 
+void Stepper_start (void){ 
+     
+    	myStepper._step_num = 0;    
+			// All pins(Port1~4, Pin1~4) set as DigitalOut '0'
+			GPIO_write(myStepper.port1, myStepper.pin1,1);
+			GPIO_write(myStepper.port2, myStepper.pin2,1);
+			GPIO_write(myStepper.port3, myStepper.pin3,1);
+			GPIO_write(myStepper.port4, myStepper.pin4,1);
+}

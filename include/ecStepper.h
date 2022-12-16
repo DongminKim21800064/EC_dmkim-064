@@ -45,7 +45,7 @@ void Stepper_init(GPIO_TypeDef* port1, int pin1, GPIO_TypeDef* port2, int pin2, 
 void Stepper_setSpeed(long whatSpeed, int mode);
 void Stepper_step(int steps, int direction, int mode); 
 void Stepper_stop(void);
-
+void Stepper_start (void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

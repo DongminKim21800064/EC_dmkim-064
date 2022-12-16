@@ -200,11 +200,11 @@ void ICAP_init(IC_t *ICx, GPIO_TypeDef *port, int pin){
 // Input Capture configuration ---------------------------------------------------------------------			
 // 1. Select Timer channel(TIx) for Input Capture channel(ICx)
 	// Default Setting
-	/*TIMx->CCMR1 &= 	~TIM_CCMR1_CC1S;
+	TIMx->CCMR1 &= 	~TIM_CCMR1_CC1S;
 	TIMx->CCMR1 &=	~TIM_CCMR1_CC2S;
 	TIMx->CCMR2 &=	~TIM_CCMR2_CC3S;
 	TIMx->CCMR2 &=	~TIM_CCMR2_CC4S;
-	*/
+	
 	TIMx->CCMR1 |= 	TIM_CCMR1_CC1S_0;      	//01<<0   CC1S    TI1=IC1
 	TIMx->CCMR1 |= 	TIM_CCMR1_CC2S_0;  			//01<<8   CC2s    TI2=IC2
 	TIMx->CCMR2 |= 	TIM_CCMR2_CC3S_0;       //01<<0   CC3s    TI3=IC3
@@ -276,7 +276,7 @@ void ICAP_setup(IC_t *ICx, int ICn, int edge_type){
 
 
 // Configure Activation Edge direction
-	TIMx->CCER   &= ~( 10 << 4 * (ICn-1));	  									// Clear CCnNP/CCnP bits for ICn
+TIMx->CCER  &= ~(5UL << (4*(ICn - 1) + 1));	  									// Clear CCnNP/CCnP bits for ICn
 	switch(edge_type){
 		case RISE: TIMx->CCER &= ~( 10 << 4 * (ICn-1));	 break;   //rising:  00
 		case FALL: TIMx->CCER |= 2<<( 4 * (ICn-1));	 break; 			//falling: 01
