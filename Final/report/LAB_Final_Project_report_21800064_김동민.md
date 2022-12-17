@@ -10,7 +10,7 @@ Embedded Controller Lab Report
 
 **Author/Partner:** **Dongmin Kim / Jinho Kook**
 
-**Github:** https://github.com/DongminKim21800064/EC_dmkim-064/tree/main/Final
+**Github:** **https://github.com/DongminKim21800064/EC_dmkim-064/tree/main/Final**
 
 **Demo Video:** **https://www.youtube.com/watch?v=e--00xkY3is**
 
@@ -221,7 +221,16 @@ Design an embedded system to realize a simple smart factory safety system with t
 
 
 
-# V. Appendix
+
+
+# V. Trouble Shooting
+
+1. As multiple timers were used, there were many errors caused by overlapping timers.
+   - We solved this problem by designing a timer through pin map of ecPWM.c.
+2. When the operating temperature of the temperature sensor is set to 20 degrees, the cooler fan stops near the operating temperature and repeats operation.
+   - If the target temperature is set to 20 degrees, this phenomenon can be prevented by setting the operating temperature to +2 degrees and the stopping temperature to -2 degrees. I learned from my studies that many devices used in real industries work with algorithms like this
+
+# VI. Appendix
 
 Github ; https://github.com/DongminKim21800064/EC_dmkim-064/tree/main/Final
 
@@ -937,6 +946,49 @@ void ADC_IRQHandler(void){
       
       
  }
+}
+```
+
+
+
+#### Arduino main.c
+
+``` c
+#include <Wire.h> 
+#include <LiquidCrystal_I2C_Hangul.h>
+
+// Set the LCD address to 0x27 for a 16 chars and 2 line display
+LiquidCrystal_I2C_Hangul lcd(0x27, 16, 2);
+
+// the setup routine runs once when you press reset:
+void setup() {
+  // initialize serial communication at 9600 bits per second:
+  Serial.begin(9600);
+  lcd.init();
+  lcd.backlight();
+  lcd.print("LM35 Test");
+  delay(1000);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  // read the input on analog pin 0:
+  int sensorValue = analogRead(A0);
+  // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
+  float voltage = sensorValue * (5.0 / 1023.0);
+  float temperature = voltage*100;
+  // print out the value you read:
+  Serial.println("Voltage : ");
+  Serial.println(voltage);
+  Serial.println("Temperature : ");
+  Serial.println(temperature);
+
+  lcd.setCursor(0,0);
+  lcd.print("T :");
+  lcd.print(temperature);
+  lcd.print((char)223);
+  lcd.print("C");
+  delay(500);
 }
 ```
 
